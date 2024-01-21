@@ -10,21 +10,22 @@ import java.io.IOException;
 public class Valuator {
 
     /**
-     * When the class is run, if the app data does not already have a folder to hold its data it creates one. After
-     * that, the program opens the LoginSignup interface.
+     * When the class is run, if the app data does not already have a folder to
+     * hold its data it creates one. After that, the program opens the
+     * LoginSignup interface.
      *
      * @param args Arguments for the main.
      *
-     * @throws IOException In the scenario that there is an issue with accessing files the program throws an
-     *                     IOException.
+     * @throws IOException In the scenario that there is an issue with accessing
+     *                     files the program throws an IOException.
      */
     public static void main(String[] args) throws IOException {
 
         
-
+        // Set the folder for the application's data to the APPDATA path.
         resources.Variables.setDataFolderPath(System.getenv("APPDATA") + "/Valuator");
 
-        // Main folder.
+        // Create the main folder if it does not already exist.
         File appDataFolder = new File(resources.Variables.dataFolderPath);
         if (!appDataFolder.exists()) {
 
@@ -32,7 +33,7 @@ public class Valuator {
 
         }
 
-        // Companies folder.
+        // Create the folder for the companies if it does not already exist.
         File userbaseFile = getFile();
         if (!userbaseFile.exists()) {
 
@@ -41,13 +42,20 @@ public class Valuator {
 
         }
 
-        new view.LoginSignup().setVisible(true); // Opens the LoginSignup interface.
+        // Create a new LoginSignup interface.
+        new view.LoginSignup().setVisible(true);
 
     }
 
+    /**
+     * Check if a file or folder exists, create it if it does not.
+     * 
+     * @return The File object created.
+     */
     private static File getFile() {
 
-        String companiesFolderPath = resources.Variables.dataFolderPath + "/Companies";
+        // Create companies folder.
+        String companiesFolderPath = resources.Variables.dataFolderPath+ "/Companies";
         File companiesFolder = new File(companiesFolderPath);
         if (!companiesFolder.exists()) {
 
@@ -56,7 +64,7 @@ public class Valuator {
 
         }
 
-        // Users folder.
+        // Create Users folder.
         String usersFolderPath = resources.Variables.dataFolderPath + "/Users";
         File usersFolder = new File(usersFolderPath);
         if (!usersFolder.exists()) {
