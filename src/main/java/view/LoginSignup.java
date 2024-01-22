@@ -54,6 +54,7 @@ public final class LoginSignup extends javax.swing.JFrame {
 
         titlePanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        informationButton = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
         fieldPanel = new javax.swing.JPanel();
         usernameTextField = new javax.swing.JTextField();
@@ -73,21 +74,38 @@ public final class LoginSignup extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Valuator");
 
+        informationButton.setBackground(new java.awt.Color(255, 255, 255));
+        informationButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        informationButton.setForeground(new java.awt.Color(0, 51, 153));
+        informationButton.setText("i");
+        informationButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                informationButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout titlePanelLayout = new javax.swing.GroupLayout(titlePanel);
         titlePanel.setLayout(titlePanelLayout);
         titlePanelLayout.setHorizontalGroup(
             titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(titlePanelLayout.createSequentialGroup()
-                .addGap(125, 125, 125)
+                .addContainerGap()
+                .addComponent(informationButton)
+                .addGap(88, 88, 88)
                 .addComponent(jLabel3)
                 .addContainerGap(124, Short.MAX_VALUE))
         );
         titlePanelLayout.setVerticalGroup(
             titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(titlePanelLayout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jLabel3)
-                .addGap(12, 12, 12))
+                .addGroup(titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(titlePanelLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel3))
+                    .addGroup(titlePanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(informationButton)))
+                .addContainerGap())
         );
 
         usernameTextField.setForeground(new java.awt.Color(204, 204, 204));
@@ -338,19 +356,15 @@ public final class LoginSignup extends javax.swing.JFrame {
 
     }//GEN-LAST:event_usernameTextFieldFocusGained
 
-    /**
-     * Main method for testing
-     *
-     * @param args
-     */
-    public static void main(String args[]) {
-
-        new LoginSignup().setVisible(true);
-
-    }
+    private void informationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_informationButtonActionPerformed
+        
+        
+        
+    }//GEN-LAST:event_informationButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel fieldPanel;
+    private javax.swing.JButton informationButton;
     private javax.swing.JButton insteadButton;
     private javax.swing.JLabel insteadLabel;
     private javax.swing.JLabel jLabel3;

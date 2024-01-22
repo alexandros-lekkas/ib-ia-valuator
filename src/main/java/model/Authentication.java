@@ -45,6 +45,8 @@ public class Authentication {
      */
     public User signUp(String username, String password) {
 
+        logger.info("Signing up User. | Username: " + username + " – Password: " + password);
+
         // Check fields provided by user.
         if (username.isEmpty() || password.isEmpty()) {
 
@@ -137,6 +139,8 @@ public class Authentication {
      */
     private boolean checkUserExists(String newUsername) {
 
+        logger.info("Check up User. | New username: " + newUsername);
+
         boolean exists = false;
 
         // Try to search through RandomAccessFile to see if the username exists.
@@ -183,6 +187,8 @@ public class Authentication {
      * @return The user object if login is successful, null otherwise.
      */
     public User logIn(String username, String password) {
+
+        logger.info("Logging in User. | Username: " + username + " – Password: " + password);
 
         // Check the inputted fields.
         if (username.isEmpty() || password.isEmpty()) {
