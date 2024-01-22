@@ -28,7 +28,7 @@ public class Company {
     // Next Company in the CompanyList linked list.
     private Company next = null;
 
-    // File object of Company.
+    // File for the Company.
     private File file;
 
     // The file path of the Company.
@@ -47,22 +47,21 @@ public class Company {
     private String country;
 
     // ArrayList of Statistic objects representing the revenue streams for the Company.
-    private ArrayList<Statistic> revenues;
+    public ArrayList<Statistic> revenues;
 
     // ArrayList of Statistic objects representing the costs for the Company.
-    private ArrayList<Statistic> costs;
+    public ArrayList<Statistic> costs;
 
     /**
-     * Create a new company.
+     * Creates a new Company object by reading data from a file and initializing its fields.
      *
-     * @param filePath Requires the file path of the company file to get details
-     * from it.
-     * @param fileName The file name of the company.
+     * @param filePath The path to the file containing company details.
+     * @param fileName The name of the file containing company details.
      */
     public Company(String filePath, String fileName) {
 
-        this.fileName = fileName;
         this.filePath = filePath;
+        this.fileName = fileName;
         this.revenues = new ArrayList<>(); // Initialize the revenues list.
         this.costs = new ArrayList<>(); // Initialize the costs list.
 
@@ -74,7 +73,7 @@ public class Company {
 
             // Read file until "END OF DETAILS" is found.
             boolean found = false;
-            while (!found) { // While the end of the details are not reached...
+            while (!found) {
 
                 try {
 
@@ -112,21 +111,37 @@ public class Company {
 
                         }
 
-                    } catch (ArrayIndexOutOfBoundsException error) {
+                    } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
 
-                        JOptionPane.showMessageDialog(null, "Error reading details. Please check file template!", "Error", JOptionPane.ERROR_MESSAGE);
+                        // Output an error message.
+                        System.out.println(arrayIndexOutOfBoundsException.getMessage());
+                        JOptionPane.showMessageDialog(
+
+                                null,
+                                "Error reading details. Check file template.",
+                                "IO Error",
+                                JOptionPane.ERROR_MESSAGE
+
+                        );
 
                     }
 
-                } catch (NullPointerException error) {
+                } catch (IOException ioException) {
 
-                    found = true; // Break from the loop
+                    // Output an error message.
+                    System.out.println(ioException.getMessage());
+                    JOptionPane.showMessageDialog(
 
-                } catch (IOException ex) {
+                            null,
+                            "Issue when reading company file.",
+                            "IO Error",
+                            JOptionPane.ERROR_MESSAGE
 
-                    JOptionPane.showMessageDialog(null, "Issue with file!", "Error", JOptionPane.ERROR_MESSAGE);
+                    );
 
-                    Logger.getLogger(Company.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (NullPointerException nullPointerException) {
+
+                    System.out.println(nullPointerException.getMessage());
 
                 }
 
@@ -134,94 +149,25 @@ public class Company {
 
             this.file = new File(this.filePath);
 
-        } catch (FileNotFoundException ex) {
+        } catch (FileNotFoundException fileNotFoundException) {
 
-            Logger.getLogger(Company.class.getName()).log(Level.SEVERE, null, ex);
+            // Output an error message.
+            System.out.println(fileNotFoundException.getMessage());
+            JOptionPane.showMessageDialog(
 
-            JOptionPane.showMessageDialog(null, "Company file was not found!", "Error", JOptionPane.ERROR_MESSAGE);
+                    null,
+                    "Company file not found.",
+                    "IO Error",
+                    JOptionPane.ERROR_MESSAGE
 
+            );
         }
 
-        readStatistics(); // Reads the file statistics.
+        readStatistics(); // Read the statistics of the Company.
 
     }
 
-    /**
-     * Get next company (linked list method).
-     *
-     * @return The next company in the linked list.
-     */
-    public Company getNext() {
 
-        return next;
-
-    }
-
-    /**
-     * Set the next company (linked list method).
-     *
-     * @param next The company to which to set the next company of the current
-     * one.
-     */
-    public void setNext(Company next) {
-
-        this.next = next;
-
-    }
-    
-    /**
-     * Gets the file name of the company.
-     * 
-     * @return String of company file name, not file path.
-     */
-    public String getFileName() {
-        
-        return this.fileName;
-        
-    }
-
-    /**
-     * Get the file name used to create the company.
-     *
-     * @return The name of the file that was used when creating the company
-     * object.
-     */
-    public String getFileName() {
-
-        return this.file.getName();
-
-    }
-
-    /**
-     * Gets the name of the company.
-     *
-     * @return Name of the company.
-     */
-    public String getName() {
-
-        return this.name;
-
-    }
-
-    /**
-     * Gets the description of the company
-     *
-     * @return Description of the company
-     */
-    public String getDescription() {
-        return this.description;
-    }
-
-    /**
-     * Gets the country of the company.
-     *
-     * @return The country of the company.
-     */
-    public String getCountry() {
-
-        return this.country;
-
-    }
 
     /**
      * Saves the statistics from the file to the two ArrayLists.
@@ -310,27 +256,7 @@ public class Company {
 
     }
 
-    /**
-     * Gets the revenues ArrayList.
-     *
-     * @return ArrayList of revenues.
-     */
-    public ArrayList<Statistic> getRevenues() {
 
-        return this.revenues;
-
-    }
-
-    /**
-     * Gets the costs ArrayList.
-     *
-     * @return ArrayList of revenues.
-     */
-    public ArrayList<Statistic> getCosts() {
-
-        return this.costs;
-
-    }
 
     /**
      * Calculates the value of a company with extrapolation if specified.
@@ -451,5 +377,62 @@ public class Company {
         return sum;
 
     }
+
+    /**
+     * Get next company (linked list method).
+     *
+     * @return The next company in the linked list.
+     */
+    public Company getNext() { return next; }
+
+    /**
+     * Set the next company (linked list method).
+     *
+     * @param next The company to which to set the next company of the current
+     * one.
+     */
+    public void setNext(Company next) { this.next = next; }
+
+    /**
+     * Gets the name of the company.
+     *
+     * @return Name of the company.
+     */
+    public String getName() { return this.name; }
+
+    /**
+     * Gets the description of the company
+     *
+     * @return Description of the company
+     */
+    public String getDescription() { return this.description; }
+
+    /**
+     * Gets the country of the company.
+     *
+     * @return The country of the company.
+     */
+    public String getCountry() { return this.country; }
+
+    /**
+     * Gets the name of the file from which the Company object was initialized.
+     *
+     * @return The name of the file as a String.
+     */
+    public String getFileName() { return fileName; }
+
+    /**
+     * Gets the revenues ArrayList.
+     *
+     * @return ArrayList of revenues.
+     */
+    public ArrayList<Statistic> getRevenues() { return this.revenues; }
+
+    /**
+     * Gets the costs ArrayList.
+     *
+     * @return ArrayList of revenues.
+     */
+    public ArrayList<Statistic> getCosts() { return this.costs; }
 
 }

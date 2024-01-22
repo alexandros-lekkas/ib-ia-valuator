@@ -202,7 +202,7 @@ public class Dashboard extends javax.swing.JFrame {
 
                 // Add to the company.
                 model.CompanyList companyList = user.getCompanyList(); // Retrieve the list of companies.
-                company = new model.Company(selectedFile.getAbsolutePath());
+                company = new model.Company(selectedFile.getAbsolutePath(), selectedFile.getName());
                 companyList.add(company); // Add the company to the company list.
                 companyList.save();
                 createCompanyButtons();

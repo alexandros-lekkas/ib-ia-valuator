@@ -470,7 +470,7 @@ public class Dashboard extends javax.swing.JFrame {
      */
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         
-        boolean deleted = companyList.remove(company.getFileName());
+        // Nothing
         
     }//GEN-LAST:event_deleteButtonActionPerformed
 
