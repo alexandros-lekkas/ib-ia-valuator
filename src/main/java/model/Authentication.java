@@ -49,7 +49,7 @@ public class Authentication {
 
                     null,
                     "Username and/or password cannot be blank!",
-                    "Error",
+                    "IO Error",
                     JOptionPane.ERROR_MESSAGE
 
             );
@@ -154,6 +154,7 @@ public class Authentication {
 
         } catch (IOException ioException) {
 
+            // Output error message.
             System.out.println(ioException.getMessage());
             JOptionPane.showMessageDialog(
 
@@ -170,36 +171,79 @@ public class Authentication {
     }
 
     /**
-     * Logs in a user by checking if provided username and password match the stored user credentials.
+     * Logs in a user with the given username and password.
      *
-     * @param username The username of the user to log in.
-     * @param password The password of the user to log in.
-     * @return The User object corresponding to the logged in user, or null if the login details are incorrect.
+     * @param username The username of the user.
+     * @param password The password of the user.
+     *
+     * @return The user object if login is successful, null otherwise.
      */
     public User logIn(String username, String password) {
 
+        // Check the inputted fields.
         if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Username and/or password cannot be blank!", "Error", JOptionPane.ERROR_MESSAGE);
+
+            // Output error message.
+            JOptionPane.showMessageDialog(
+
+                    null,
+                    "Username and/or password cannot be blank!",
+                    "IO Error",
+                    JOptionPane.ERROR_MESSAGE
+
+            );
             return null;
+
         }
 
+        // Try to check for the user using the RandomAccessFile.
         try (RandomAccessFile file = new RandomAccessFile(userbaseFilePath, "rw")) {
+
+            // Loop through the RandomAccessFile.
             while (file.getFilePointer() < file.length()) {
+
+                // Read the current username and password.
                 String existingUsername = file.readUTF();
                 String existingPassword = file.readUTF();
 
+                // Check if the username provided matches up with the one in the file (same for password).
                 if (existingUsername.equals(username) && existingPassword.equals(password)) {
+
                     String userFilePath = resources.Variables.dataFolderPath + "/Users/" + username + ".csv";
-                    this.user = new User(username, userFilePath); // Create new user object.
+                    this.user = new User(username, userFilePath);
+
                     return user;
+
                 }
+
             }
-        } catch (IOException ex) {
-            Logger.getLogger(Authentication.class.getName()).log(Level.SEVERE, null, ex);
+
+        } catch (IOException ioException) {
+
+            // Output error message.
+            System.out.println(ioException.getMessage());
+            JOptionPane.showMessageDialog(
+
+                    null,
+                    "Error when trying to register.",
+                    "IO Error",
+                    JOptionPane.ERROR_MESSAGE
+
+            );
+
         }
 
-        JOptionPane.showMessageDialog(null, "Login details incorrect!", "Error", JOptionPane.ERROR_MESSAGE);
+        // Output login failed message.
+        JOptionPane.showMessageDialog(
+
+                null,
+                "Incorrect details!",
+                "Login Failed",
+                JOptionPane.ERROR_MESSAGE
+
+        );
         return null;
+
     }
 
     /**
