@@ -7,6 +7,13 @@
 
 package model;
 
+import javax.swing.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.List;
+
 /**
  * The User class represents a user in the system.
  */
@@ -18,6 +25,9 @@ public class User {
     // The list of companies belonging to the User.
     private final CompanyList companyList;
 
+    // The file path for the User.
+    private final String filePath;
+
     /**
      * Constructs a new User object with the given username and file path.
      *
@@ -28,6 +38,46 @@ public class User {
 
         this.username = username;
         this.companyList = new CompanyList(filePath);
+        this.filePath = filePath;
+
+    }
+
+    public void updateUserFile() {
+
+        try {
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            // Loop through the linked list building the String.
+            Company current = this.companyList.getHead();
+            while (current != null) {
+
+                stringBuilder.append(current.getFileName());
+                stringBuilder.append(",");
+
+            }
+
+            if (!stringBuilder.isEmpty()) { stringBuilder.deleteCharAt(stringBuilder.length() - 1); }
+
+            List<String> lines = Files.readAllLines(Paths.get(this.filePath));
+            lines.set(0, stringBuilder.toString());
+
+            Files.write(Paths.get(this.filePath), lines, StandardOpenOption.WRITE);
+
+        } catch (IOException ioException) {
+
+            // Output error message.
+            System.out.println(ioException.getMessage());
+            JOptionPane.showMessageDialog(
+
+                    null,
+                    "Issue when trying to update user's list of companies.",
+                    "IO Error",
+                    JOptionPane.ERROR_MESSAGE
+
+            );
+
+        }
 
     }
 

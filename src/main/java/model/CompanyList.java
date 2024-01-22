@@ -1,20 +1,34 @@
+/*
+ * Copyright (c) 2024 Alexandros Lekkas. All rights reserved.
+ *
+ * This work is a part of the Computer Science Internal Assessment for the International Baccalaureate program by
+ * Alexandros Lekkas. Unauthorized reproduction, distribution, or use of this material is prohibited.
+ */
+
 package model;
 
-import java.util.Scanner;
+import resources.Variables;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import javax.swing.JOptionPane;
+
 import java.util.NoSuchElementException;
+import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 /**
- * Linked list that stores all of the companies.
+ * Represents a linked list of companies.
  */
 public final class CompanyList {
 
-    private final String filePath; // User file, the file that holds the list of companies that belong to the user.
-    private Company head; // The beginning of the linked list, the first company.
+    // File path of the User's file.
+    private final String filePath;
+
+    // The first Company in the linked list.
+    private Company head;
 
     /**
      * Constructs a CompanyList object. This constructor takes a file path as a parameter and initializes the linked
@@ -24,14 +38,14 @@ public final class CompanyList {
      */
     public CompanyList(String filePath) {
 
-        // Create the linked list of Company objects.
+        // Initializes the linked list of Company objects.
         this.head = null;
         this.filePath = filePath;
 
-        // Loop through user file and create and add Company objects.
+        // Loop through the User's file.
         try {
 
-            // Use a Scanner object to read the first line in the file.
+            // Use the scanner object to read through the first line in the User file.
             Scanner scanner = new Scanner(new File(this.filePath));
             String line = scanner.nextLine();
             String[] companyFileNames = line.split(",");
@@ -39,35 +53,45 @@ public final class CompanyList {
             // Loop through the line, creating a new Company object for each file location written.
             for (String companyFileName : companyFileNames) {
 
-                if (companyFileName.toLowerCase().endsWith(".csv")) { // If the file is a CSV file...
+                // Check if the file is a CSV file.
+                if (companyFileName.toLowerCase().endsWith(".csv")) {
 
                     // Create a new Company object and add it to the linked list.
-                    Company company = new Company(resources.Variables.dataFolderPath + "/Companies/" + companyFileName, companyFileName);
+                    Company company = new Company(Variables.dataFolderPath + "/Companies/" + companyFileName, companyFileName);
                     this.add(company);
 
-                } else { // If the file is not a CSV file...
+                } else {
 
-                    System.out.println(System.currentTimeMillis() + " [ERROR] " + "Ignored file " + companyFileName);
+                    // Output error message.
+                    JOptionPane.showMessageDialog(
+
+                            null,
+                            "Company file " + companyFileName + " + is not a CSV file",
+                            "IO Error",
+                            JOptionPane.ERROR_MESSAGE
+
+                    );
 
                 }
 
             }
 
-        } catch (IOException ioException) { // If there is an IOException exception...
+        } catch (IOException ioException) {
 
-            // Output an error message to the user.
+            // Output error message.
+            System.out.println(ioException.getMessage());
             JOptionPane.showMessageDialog(
 
                     null,
-                    "There was an error writing to the user file!\n" + ioException.toString(),
+                    "Issue when trying to add list of companies.",
                     "IO Error",
                     JOptionPane.ERROR_MESSAGE
 
             );
 
-        } catch (NoSuchElementException noSuchElementException) { // If there is a NoSuchElementException exception...
+        } catch (NoSuchElementException noSuchElementException) {
 
-            // Do nothing. This does not need to be handled.
+            System.out.println(noSuchElementException.getMessage());
 
         }
 
@@ -76,37 +100,38 @@ public final class CompanyList {
     /**
      * Adds a Company object to the linked list.
      *
-     * @param company The Company object to be added to the linked list.
+     * @param company The Company object to be added.
      */
     public void add(Company company) {
-        
+
         Company current;
 
-        // Add company to linked list.
-        if (head == null) { // Check if the first value exists.
+        // Check if the Company is the first in the list.
+        if (head == null) {
 
             head = company;
 
-        } else { // Check if anything exists in list first
+        } else { // If the Company is not the first Company...
 
-            current = head; // Set the first company
+            current = head; // Start from the head Company.
 
-            while (current.getNext() != null) { // Loop through.
+            // Loop through the linked list until there is no next Company.
+            while (current.getNext() != null) {
 
                 current = current.getNext();
 
             }
 
-            current.setNext(company); // Set next company after we reach the end of the linekd list.
+            current.setNext(company); // Set the next Company to the new one to add.
 
         }
 
     }
 
     /**
-     * Remove company from the linked list.
+     * Removes a Company object from the linked list.
      *
-     * @param company The company that will be removed from the linked list.
+     * @param company The Company object to be removed.
      */
     public void remove(Company company) {
 
@@ -139,52 +164,6 @@ public final class CompanyList {
         previous.setNext(current.getNext());
 
     }
-    
-    /**
-     * Finds the Company with the specified name and then remove it from the
-     * linked list.
-     * 
-     * @param companyName The name of the Company object to search for.
-     */
-    public boolean remove(String companyName) {
-        
-        // Check if anything exists in the linked list.
-        if (this.head == null) {
-            
-            return false;
-            
-        }
-        
-        Company current = head;
-        Company previous = null;
-        
-        // If the current item in the list is the only item in hte list.
-        if (current.getName().equals(companyName)) {
-            
-            remove(current);
-            return false;
-
-        }
-        
-        // Search for current Company to deleted.
-        while (current != null && !current.getName().equals(companyName)) {
-            
-            previous = current;
-            current = current.getNext();
-            
-        }
-        
-        // If Company with specified company name is not found.
-        if (current == null) {
-            
-            return false;
-            
-        }
-        
-        remove(current);
-        return true;
-        
-    }
 
     /**
      * Re-writes the file with the updated linked list.
@@ -195,14 +174,14 @@ public final class CompanyList {
         Company current = head;
 
         while (current != null) {
-            
+
             stringBuilder.append(current.getFileName());
             current = current.getNext();
 
             if (current != null) {
                 stringBuilder.append(",");
             }
-            
+
         }
 
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(this.filePath))) {
@@ -210,9 +189,9 @@ public final class CompanyList {
             bufferedWriter.write(stringBuilder.toString());
 
         } catch (IOException error) {
-            
+
             JOptionPane.showMessageDialog(null, "There was an error writing to the file!", "IO Error", JOptionPane.ERROR_MESSAGE);
-            
+
         }
 
     }
