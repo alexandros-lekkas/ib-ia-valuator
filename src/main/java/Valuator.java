@@ -10,11 +10,16 @@ import resources.Variables;
 import java.io.File;
 import java.io.IOException;
 
+import java.util.logging.Logger;
+
 /**
  * The Valuator class is the entry point of the application. It is responsible for creating the necessary folders and
  * files for storing application data and launching the LoginSignup interface.
  */
 public class Valuator {
+
+    // Logging.
+    private static final Logger logger = Logger.getLogger(Valuator.class.getName());
 
     /**
      * The main method is the entry point of the Valuator application. It is responsible for creating the necessary
@@ -30,7 +35,11 @@ public class Valuator {
         createRequiredFilesAndFolders(); // Creates required files and folders.
 
         new view.LoginSignup().setVisible(true); // Output a new LoginSignup interface.
+
+        logger.info("Application started successfully.");
+
     }
+
 
     /**
      * Creates the required files and folders for the application data.

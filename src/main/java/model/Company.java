@@ -25,6 +25,9 @@ import javax.swing.JOptionPane;
  */
 public class Company {
 
+    // Logger.
+    private static final Logger logger = Logger.getLogger(Company.class.getName());
+
     // Next Company in the CompanyList linked list.
     private Company next = null;
 
@@ -60,73 +63,68 @@ public class Company {
      */
     public Company(String filePath, String fileName) {
 
+        logger.info("Creating Company. | FilePath: " + filePath + " – FileName: " + fileName);
+
         this.filePath = filePath;
         this.fileName = fileName;
         this.revenues = new ArrayList<>(); // Initialize the revenues list.
         this.costs = new ArrayList<>(); // Initialize the costs list.
 
-        // Create new FileReader and BufferedReader.
-        FileReader fileReader = null;
-        try {
+        try (FileReader fileReader = new FileReader(filePath);
+             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
 
-            fileReader = new FileReader(filePath);
+            logger.info("Created new FileReader and BufferedReader.");
 
-        } catch (FileNotFoundException fileNotFoundException) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
 
-            // Output an error message.
-            System.out.println(fileNotFoundException.getMessage());
+                String[] currentLine = line.split(",");
+                logger.info(Arrays.toString(currentLine));
+
+                // Use a switch statement to store the specific data of the line being currently read.
+                switch (currentLine[0]) {
+
+                    case "Name":
+
+                        this.name = currentLine[1];
+                        break;
+
+                    case "Description":
+
+                        this.description = currentLine[1];
+                        break;
+
+                    case "Country":
+
+                        this.country = currentLine[1];
+                        break;
+
+                    // If the END OF DETAILS is found stop the loop.
+                    case "END OF DETAILS":
+
+                        return;
+
+                    default:
+
+                        break;
+
+                }
+
+            }
+            
+        } catch (IOException ioException) {
+
+            logger.severe(ioException.getMessage());
             JOptionPane.showMessageDialog(
 
                     null,
-                    "Company file not found.",
+                    "Exception with input.",
                     "IO Error",
                     JOptionPane.ERROR_MESSAGE
 
             );
 
         }
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-        boolean found;
-
-        found = false;
-        while (!found) {
-
-            try {
-
-                String line = bufferedReader.readLine();
-
-                if (line != null) {
-
-                    String[] currentLine = line.split(",");
-
-                    // Use a switch statement to store the specific data of the line being currently read.
-                    switch (currentLine[0]) {
-
-                        case "Name": this.name = currentLine[1]; break;
-
-                        case "Description": this.description = currentLine[1]; break;
-
-                        case "Country": this.country = currentLine[1]; break;
-
-                        // If the END OF DETAILS is found stop the loop.
-                        case "END OF DETAILS": found = true; break;
-
-                        default: break;
-
-                    }
-
-                }
-
-            } catch (IOException ioException) {
-
-                System.out.println(ioException.getMessage());
-
-            }
-
-        }
-
-        readStatistics(); // Read the statistics of the Company.
 
     }
 
@@ -141,9 +139,86 @@ public class Company {
 
         // Create new FileReader and BufferedReader.
         FileReader fileReader = null;
+        BufferedReader bufferedReader = null;
+
         try {
 
             fileReader = new FileReader(this.filePath);
+            bufferedReader = new BufferedReader(fileReader);
+
+            boolean found;
+
+            // Find where the statistics begin in the file.
+            found = false;
+            while (!found) {
+
+                try {
+
+                    String line = bufferedReader.readLine();
+
+                    if (line != null) {
+
+                        String[] currentLine = line.split(",");
+
+                        // Check if we find the statistics part.
+                        if (currentLine[0].equals("STATISTICS")) { found = true; }
+
+                    } else {
+
+                        logger.warning("Null line, might cause issues.");
+
+                    }
+
+                } catch (IOException ioException) {
+
+                    System.out.println(ioException.getMessage());
+
+                }
+
+
+            }
+
+            // Find where the statistics begin in the file.
+            found = false;
+            while (!found) {
+
+                try {
+
+                    String line = bufferedReader.readLine();
+
+                    if (line != null) {
+
+                        String[] currentLine = line.split(",");
+
+                        // Check if the currentLine[0] is equal to "END OF STATISTICS".
+                        if (currentLine[0].equals("END OF STATISTICS")) { // If end of statistics...
+
+                            found = true;
+
+                        } else { // If not end of statistics...
+
+                            // Check if the statistic is a revenue or cost.
+                            if (currentLine[0].equalsIgnoreCase("REVENUE")) {
+
+                                revenues.add(new Statistic(currentLine[1], this.filePath));
+
+                            } else if (currentLine[0].equalsIgnoreCase("COST")) {
+
+                                costs.add(new Statistic(currentLine[1], this.filePath));
+
+                            }
+
+                        }
+
+                    }
+
+                } catch (IOException ioException) {
+
+                    System.out.println(ioException.getMessage());
+
+                }
+
+            }
 
         } catch (FileNotFoundException fileNotFoundException) {
 
@@ -158,77 +233,7 @@ public class Company {
 
             );
 
-        }
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-        boolean found;
-
-        // Find where the statistics begin in the file.
-        found = false;
-        while (!found) {
-
-            try {
-
-                String line = bufferedReader.readLine();
-
-                if (line != null) {
-
-                    String[] currentLine = line.split(",");
-
-                    // Check if we find the statistics part.
-                    if (currentLine[0].equals("STATISTICS")) { found = true; }
-
-                }
-
-            } catch (IOException ioException) {
-
-                System.out.println(ioException.getMessage());
-
-            }
-
-
-        }
-
-        // Find where the statistics begin in the file.
-        found = false;
-        while (!found) {
-
-            try {
-
-                String line = bufferedReader.readLine();
-
-                if (line != null) {
-
-                    String[] currentLine = line.split(",");
-
-                    // Check if the currentLine[0] is equal to "END OF STATISTICS".
-                    if (currentLine[0].equals("END OF STATISTICS")) { // If end of statistics...
-
-                        found = true;
-
-                    } else { // If not end of statistics...
-
-                        // Check if the statistic is a revenue or cost.
-                        if (currentLine[0].equalsIgnoreCase("REVENUE")) {
-
-                            revenues.add(new Statistic(currentLine[1], this.filePath));
-
-                        } else if (currentLine[0].equalsIgnoreCase("COST")) {
-
-                            costs.add(new Statistic(currentLine[1], this.filePath));
-
-                        }
-
-                    }
-
-                }
-
-            } catch (IOException ioException) {
-
-                System.out.println(ioException.getMessage());
-
-            }
-
+            return;
 
         }
 
