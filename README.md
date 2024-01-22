@@ -3,7 +3,7 @@
 
 ## Description 📕
 
-This project consists of code which enhances the quality of life for programmers using IntelliJ IDEA 2023.3.2, Ultimate Edition on Windows. It was designed as part of my IB Internal Assessment program and carries out a range of commands pertinent to the development lifecycle.
+This project was built as a part of an IB Internal Assessment. The chosen client for this program was my father, an investment banker, who's use of traditional CSV files and manual edits by hand led to the need for a digital solution, hence, this program.
 
 ## Technical Stack 🛠️💻
 
@@ -24,7 +24,7 @@ This code is shared solely for the purpose of my IB Internal Assessment. Taking 
 
 ## Credits 📝
 
-This project is created by **Your Name** as a part of the IB Internal Assessment.
+This project is created by **Alexandros Lekkas** as a part of the IB Internal Assessment for Computer Science HL.
 
 ## 📃 License
 
