@@ -42,7 +42,7 @@ public final class CompanyList {
                 if (companyFileName.toLowerCase().endsWith(".csv")) { // If the file is a CSV file...
 
                     // Create a new Company object and add it to the linked list.
-                    Company company = new Company(resources.Variables.dataFolderPath + "/Companies/" + companyFileName);
+                    Company company = new Company(resources.Variables.dataFolderPath + "/Companies/" + companyFileName, companyFileName);
                     this.add(company);
 
                 } else { // If the file is not a CSV file...
@@ -139,6 +139,52 @@ public final class CompanyList {
         previous.setNext(current.getNext());
 
     }
+    
+    /**
+     * Finds the Company with the specified name and then remove it from the
+     * linked list.
+     * 
+     * @param companyName The name of the Company object to search for.
+     */
+    public boolean remove(String companyName) {
+        
+        // Check if anything exists in the linked list.
+        if (this.head == null) {
+            
+            return false;
+            
+        }
+        
+        Company current = head;
+        Company previous = null;
+        
+        // If the current item in the list is the only item in hte list.
+        if (current.getName().equals(companyName)) {
+            
+            remove(current);
+            return false;
+
+        }
+        
+        // Search for current Company to deleted.
+        while (current != null && !current.getName().equals(companyName)) {
+            
+            previous = current;
+            current = current.getNext();
+            
+        }
+        
+        // If Company with specified company name is not found.
+        if (current == null) {
+            
+            return false;
+            
+        }
+        
+        remove(current);
+        return true;
+        
+    }
 
     /**
      * Re-writes the file with the updated linked list.
@@ -164,7 +210,9 @@ public final class CompanyList {
             bufferedWriter.write(stringBuilder.toString());
 
         } catch (IOException error) {
+            
             JOptionPane.showMessageDialog(null, "There was an error writing to the file!", "IO Error", JOptionPane.ERROR_MESSAGE);
+            
         }
 
     }

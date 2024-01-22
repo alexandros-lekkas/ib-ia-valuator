@@ -177,7 +177,9 @@ public class Dashboard extends javax.swing.JFrame {
 
     /** Removes a company */
     private void removeCompanyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeCompanyButtonActionPerformed
-        // TODO add your handling code here:
+        
+        JOptionPane.showConfirmDialog(null, "Open a company through the dashboard first to delete.");
+        
     }//GEN-LAST:event_removeCompanyButtonActionPerformed
 
     /**

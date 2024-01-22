@@ -21,6 +21,7 @@ public class Company {
     private Company next = null; // Next company in the linked list.
     private File file; // The company file object.
     private String filePath; // File path of the company file.
+    private String fileName;
     private String name; // Name of the company.
     private String description; // Description of the company.
     private String country; // Where the company is based.
@@ -32,9 +33,11 @@ public class Company {
      *
      * @param filePath Requires the file path of the company file to get details
      * from it.
+     * @param fileName The file name of the company.
      */
-    public Company(String filePath) {
+    public Company(String filePath, String fileName) {
 
+        this.fileName = fileName;
         this.filePath = filePath;
         this.revenues = new ArrayList<>(); // Initialize the revenues list.
         this.costs = new ArrayList<>(); // Initialize the costs list.
@@ -141,6 +144,17 @@ public class Company {
         this.next = next;
 
     }
+    
+    /**
+     * Gets the file name of the company.
+     * 
+     * @return String of company file name, not file path.
+     */
+    public String getFileName() {
+        
+        return this.fileName;
+        
+    }
 
     /**
      * Get the file name used to create the company.
@@ -217,7 +231,6 @@ public class Company {
                 } catch (ArrayIndexOutOfBoundsException error) {
 
                     // Do nothing, as this just means the line is blank and cannot be read so we skip.
-
                 }
 
             }
@@ -254,7 +267,6 @@ public class Company {
                 } catch (ArrayIndexOutOfBoundsException error) {
 
                     // Do nothing.
-
                 }
 
             }
@@ -415,5 +427,5 @@ public class Company {
         return sum;
 
     }
-    
+
 }
