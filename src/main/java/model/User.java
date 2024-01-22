@@ -1,50 +1,48 @@
+/*
+ * Copyright (c) 2024 Alexandros Lekkas. All rights reserved.
+ *
+ * This work is a part of the Computer Science Internal Assessment for the International Baccalaureate program by
+ * Alexandros Lekkas. Unauthorized reproduction, distribution, or use of this material is prohibited.
+ */
+
 package model;
 
 /**
- * Class to model the user and pass them as an object.
+ * The User class represents a user in the system.
  */
 public class User {
 
-    private final String username; // User's username.
-    private final CompanyList companyList; // The linked list of companies that belongs to the user.
+    // The username of the current User.
+    private final String username;
+
+    // The list of companies belonging to the User.
+    private final CompanyList companyList;
 
     /**
-     * Main constructor for the user class.
+     * Constructs a new User object with the given username and file path.
      *
-     * @param username The username assigned to the user.
-     * @param filePath The Path to the user's CSV file.
+     * @param username The username of the User.
+     * @param filePath The file path for the CompanyList object.
      */
     public User(String username, String filePath) {
 
-        // Assign passed through values to attributes.
         this.username = username;
-        // File path to the user's file.
-
-        // Get user companies.
-        this.companyList = new CompanyList(filePath); // Creates a new CompanyList object that belongs to the user, storing their companies and allowing them to manage them.
+        this.companyList = new CompanyList(filePath);
 
     }
 
     /**
-     * Get the user's username.
+     * Retrieves the username of the User.
      *
-     * @return The user's username.
+     * @return The username of the User.
      */
-    public String getUsername() {
-
-        return this.username;
-
-    }
+    public String getUsername() { return this.username; }
 
     /**
-     * Get the user's company list object.
+     * Retrieves the company list belonging to the user.
      *
-     * @return The user's CompanyList object containing the list of companies that belong to them.
+     * @return The CompanyList object containing the companies.
      */
-    public CompanyList getCompanyList() {
-
-        return this.companyList;
-
-    }
+    public CompanyList getCompanyList() { return this.companyList; }
 
 }

@@ -23,7 +23,10 @@ import javax.swing.JOptionPane;
  */
 public class Authentication {
 
+    // File path of the userbase. The file that stores the User database.
     private final String userbaseFilePath = Variables.dataFolderPath + "/userbase.dat";
+
+    // The currently authenticated User. Starts as null as no User is authenticated.
     private User user = null;
 
     /**
