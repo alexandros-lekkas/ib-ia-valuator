@@ -1,45 +1,70 @@
+/*
+ * Copyright (c) 2024 Alexandros Lekkas. All rights reserved.
+ *
+ * This work is a part of the Computer Science Internal Assessment for the International Baccalaureate program by
+ * Alexandros Lekkas. Unauthorized reproduction, distribution, or use of this material is prohibited.
+ */
+
 package view;
+
+import model.Authentication;
+import model.User;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
 
 import java.awt.Color;
+
+import java.util.logging.Logger;
+
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.JOptionPane;
 
 /**
- * Interface for logging in and signing up.
+ * Represents a login/signup form.
  */
 public final class LoginSignup extends javax.swing.JFrame {
 
-    model.Authentication authentication; // Authentication object to authenticate the user
-    boolean login = true; // Boolean that defines in what state the form should be
-    model.User user;
+    // Logging.
+    private static final Logger logger = Logger.getLogger(LoginSignup.class.getName());
+
+    // Authentication used to authorize the user.
+    Authentication authentication;
+
+    // Boolean to switch between login and signup state.
+    boolean login = true;
+
+    // User that is returned by the program.
+    User user;
 
     /**
-     * Creates new form Login
+     * Class for handling user login and sign up.
      */
     public LoginSignup() {
 
-        authentication = new model.Authentication(); // Create a new authentication object to use
+        authentication = new Authentication(); // Create a new Authentication object to use.
 
         // Attempt to set the preferred look and feel.
         try {
 
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
 
-        } catch (UnsupportedLookAndFeelException error) { // Catch a look and feel error.
-            
-            JOptionPane.showMessageDialog(null, "Visual settings not loaded properly!", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (UnsupportedLookAndFeelException unsupportedLookAndFeelException) { // Catch a look and feel error.
+
+            // Output error message.
+            logger.severe(unsupportedLookAndFeelException.getMessage());
+            JOptionPane.showMessageDialog(
+
+                    null,
+                    "Unsupported look and feel.",
+                    "Look & Feel Error",
+                    JOptionPane.ERROR_MESSAGE
+
+            );
 
         }
 
-        // Initialise the components.
-        java.awt.EventQueue.invokeLater(() -> {
-
-            initComponents();
-
-        });
+        java.awt.EventQueue.invokeLater(this::initComponents);
 
     }
 
@@ -234,10 +259,9 @@ public final class LoginSignup extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * When the instead button is pressed switch the things displayed on the
-     * screen and boolean
+     * Handles the action performed when the "insteadButton" is clicked.
      *
-     * @param evt
+     * @param evt The ActionEvent triggered by clicking the button.
      */
     private void insteadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insteadButtonActionPerformed
 
@@ -263,10 +287,9 @@ public final class LoginSignup extends javax.swing.JFrame {
     }//GEN-LAST:event_insteadButtonActionPerformed
 
     /**
-     * When submit button is pressed attempt login or signup depending on login
-     * boolean
+     * Performs the action when the "submitButton" is clicked.
      *
-     * @param evt
+     * @param evt The ActionEvent triggered by clicking the button.
      */
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
 
@@ -292,10 +315,10 @@ public final class LoginSignup extends javax.swing.JFrame {
     }//GEN-LAST:event_submitButtonActionPerformed
 
     /**
-     * When not focused on password field if text is empty set to placeholder
-     * value
+     * This method is called when the password text field loses focus. It checks if the password text field is empty,
+     * and if so, sets the text to "Password" and changes the text color to a lighter shade.
      *
-     * @param evt
+     * @param evt The FocusEvent triggered by losing focus on the password text field.
      */
     private void passwordTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordTextFieldFocusLost
 
@@ -305,13 +328,14 @@ public final class LoginSignup extends javax.swing.JFrame {
             passwordTextField.setForeground(new Color(204, 204, 204));
 
         }
+
     }//GEN-LAST:event_passwordTextFieldFocusLost
 
     /**
-     * When user focuses on the password field set the value to empty
-     * (placeholder value)
+     * This method is called when the password text field gains focus. It checks if the current text is equal to "Password" and if so, clears the text and changes the text color to
+     * black.
      *
-     * @param evt
+     * @param evt The FocusEvent triggered by gaining focus on the password text field.
      */
     private void passwordTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordTextFieldFocusGained
 
@@ -321,13 +345,14 @@ public final class LoginSignup extends javax.swing.JFrame {
             passwordTextField.setForeground(new Color(0, 0, 0));
 
         }
+
     }//GEN-LAST:event_passwordTextFieldFocusGained
 
     /**
-     * When the user is not focused on the username textfield re-add the
-     * placeholder text
+     * This method is called when the username text field loses focus. It checks if the text in the username text field
+     * is empty, and if so, sets the text to "Enter your username" and changes the text color to a lighter shade.
      *
-     * @param evt
+     * @param evt The FocusEvent triggered by losing focus on the username text field.
      */
     private void usernameTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_usernameTextFieldFocusLost
 
@@ -337,13 +362,14 @@ public final class LoginSignup extends javax.swing.JFrame {
             usernameTextField.setForeground(new Color(204, 204, 204));
 
         }
+
     }//GEN-LAST:event_usernameTextFieldFocusLost
 
     /**
-     * When the user focuses on the username text field the placeholder is
-     * removed
+     * This method is called when the username text field gains focus. It checks if the current text is equal to "Enter
+     * your username" and if so, clears the text and changes the text color to black.
      *
-     * @param evt
+     * @param evt The FocusEvent triggered by gaining focus on the username text field.
      */
     private void usernameTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_usernameTextFieldFocusGained
 
@@ -357,8 +383,16 @@ public final class LoginSignup extends javax.swing.JFrame {
     }//GEN-LAST:event_usernameTextFieldFocusGained
 
     private void informationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_informationButtonActionPerformed
-        
-        
+
+        // Output an information message.
+        JOptionPane.showMessageDialog(
+
+                null,
+                "This interface is for logging in or signing up.",
+                "Information",
+                JOptionPane.INFORMATION_MESSAGE
+
+        );
         
     }//GEN-LAST:event_informationButtonActionPerformed
 
