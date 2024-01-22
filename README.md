@@ -16,16 +16,19 @@ This project was built as a part of an IB Internal Assessment. The chosen client
 
 This code is shared solely for the purpose of my IB Internal Assessment. Taking this code and publication is strictly forbidden. Kindly refrain from using or distributing this software without explicit permission from the author (me).
 
-## 🎉 Functionality
+## Functionality 🎉
 
-- Company evaluation
-- Company merging
-- Dynamic Company CSV loading
+- Fully-fledged simple interface built in JFrame
+- Basic object-oriented user authentication
+- Basic user data storage through CSV files
+- Dynamic company loading from CSV files
+- Company merging and generation of valuations
+- Graphical statistics viewer using JFreeChart
 
 ## Credits 📝
 
 This project is created by **Alexandros Lekkas** as a part of the IB Internal Assessment for Computer Science HL.
 
-## 📃 License
+## License 📃
 
 This project is not licensed for use by third parties. Any unauthorized use or distribution is strictly prohibited.
