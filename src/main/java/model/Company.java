@@ -147,7 +147,7 @@ public class Company {
 
             }
 
-            this.file = new File(this.filePath);
+            setFile(new File(this.filePath));
 
         } catch (FileNotFoundException fileNotFoundException) {
 
@@ -167,10 +167,8 @@ public class Company {
 
     }
 
-
-
     /**
-     * Saves the statistics from the file to the two ArrayLists.
+     * Reads the statistics from a file and populates the revenues and costs ArrayLists with Statistic objects.
      */
     public void readStatistics() {
 
@@ -198,9 +196,10 @@ public class Company {
 
                     }
 
-                } catch (ArrayIndexOutOfBoundsException error) {
+                } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
 
-                    // Do nothing, as this just means the line is blank and cannot be read so we skip.
+                    System.out.println(arrayIndexOutOfBoundsException.getMessage());
+
                 }
 
             }
@@ -234,29 +233,47 @@ public class Company {
 
                     }
 
-                } catch (ArrayIndexOutOfBoundsException error) {
+                } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
 
-                    // Do nothing.
+                    System.out.println(arrayIndexOutOfBoundsException.getMessage());
+
                 }
 
             }
 
-        } catch (FileNotFoundException ex) {
+        } catch (FileNotFoundException fileNotFoundException) {
 
-            Logger.getLogger(Company.class.getName()).log(Level.SEVERE, null, ex);
+            // Output an error message.
+            System.out.println(fileNotFoundException.getMessage());
+            JOptionPane.showMessageDialog(
 
-        } catch (IOException ex) {
+                    null,
+                    "File not found.",
+                    "IO Error",
+                    JOptionPane.ERROR_MESSAGE
 
-            Logger.getLogger(Company.class.getName()).log(Level.SEVERE, null, ex);
+            );
 
-        } catch (NullPointerException ex) {
+        } catch (IOException ioException) {
 
-            // Do nothing because this just means that the line is blank. Not an issue.
+            // Output an error message.
+            System.out.println(ioException.getMessage());
+            JOptionPane.showMessageDialog(
+
+                    null,
+                    "File not found.",
+                    "IO Error",
+                    JOptionPane.ERROR_MESSAGE
+
+            );
+
+        } catch (NullPointerException nullPointerException) {
+
+            System.out.println(nullPointerException.getMessage());
+
         }
 
     }
-
-
 
     /**
      * Calculates the value of a company with extrapolation if specified.
@@ -394,6 +411,27 @@ public class Company {
     public void setNext(Company next) { this.next = next; }
 
     /**
+     * Gets the name of the file from which the Company object was initialized.
+     *
+     * @return The name of the file as a String.
+     */
+    public String getFileName() { return fileName; }
+
+    /**
+     * Retrieves the file associated with the Company object.
+     *
+     * @return The file associated with the Company object.
+     */
+    public File getFile() { return file; }
+
+    /**
+     * Sets the file associated with the Company object.
+     *
+     * @param file The file to be set.
+     */
+    public void setFile(File file) { this.file = file; }
+
+    /**
      * Gets the name of the company.
      *
      * @return Name of the company.
@@ -413,13 +451,6 @@ public class Company {
      * @return The country of the company.
      */
     public String getCountry() { return this.country; }
-
-    /**
-     * Gets the name of the file from which the Company object was initialized.
-     *
-     * @return The name of the file as a String.
-     */
-    public String getFileName() { return fileName; }
 
     /**
      * Gets the revenues ArrayList.

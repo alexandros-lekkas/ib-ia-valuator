@@ -505,7 +505,7 @@ public class Merger extends javax.swing.JFrame {
             if (selectedFile.getName().toLowerCase().endsWith(".csv")) {
 
                 // Add to the company.
-                company = new model.Company(selectedFile.getAbsolutePath());
+                company = new model.Company(selectedFile.getAbsolutePath(), selectedFile.getName());
 
             } else {
 
