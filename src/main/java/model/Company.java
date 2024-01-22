@@ -65,89 +65,11 @@ public class Company {
         this.revenues = new ArrayList<>(); // Initialize the revenues list.
         this.costs = new ArrayList<>(); // Initialize the costs list.
 
-        // Read through the file and load the data into the object.
+        // Create new FileReader and BufferedReader.
+        FileReader fileReader = null;
         try {
 
-            FileReader fileReader = new FileReader(filePath);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-            // Read file until "END OF DETAILS" is found.
-            boolean found = false;
-            while (!found) {
-
-                try {
-
-                    String[] currentLine = bufferedReader.readLine().split(",");
-
-                    try {
-
-                        // Use a switch statement to store the specific data of the line being currently read.
-                        switch (currentLine[0]) {
-
-                            case "Name":
-
-                                this.name = currentLine[1];
-                                break;
-
-                            case "Description":
-
-                                this.description = currentLine[1];
-                                break;
-
-                            case "Country":
-
-                                this.country = currentLine[1];
-                                break;
-
-                            // If the END OF DETAILS is found stop the loop.
-                            case "END OF DETAILS":
-
-                                found = true;
-                                break;
-
-                            default:
-
-                                break;
-
-                        }
-
-                    } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
-
-                        // Output an error message.
-                        System.out.println(arrayIndexOutOfBoundsException.getMessage());
-                        JOptionPane.showMessageDialog(
-
-                                null,
-                                "Error reading details. Check file template.",
-                                "IO Error",
-                                JOptionPane.ERROR_MESSAGE
-
-                        );
-
-                    }
-
-                } catch (IOException ioException) {
-
-                    // Output an error message.
-                    System.out.println(ioException.getMessage());
-                    JOptionPane.showMessageDialog(
-
-                            null,
-                            "Issue when reading company file.",
-                            "IO Error",
-                            JOptionPane.ERROR_MESSAGE
-
-                    );
-
-                } catch (NullPointerException nullPointerException) {
-
-                    System.out.println(nullPointerException.getMessage());
-
-                }
-
-            }
-
-            setFile(new File(this.filePath));
+            fileReader = new FileReader(filePath);
 
         } catch (FileNotFoundException fileNotFoundException) {
 
@@ -161,6 +83,47 @@ public class Company {
                     JOptionPane.ERROR_MESSAGE
 
             );
+
+        }
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+        boolean found;
+
+        found = false;
+        while (!found) {
+
+            try {
+
+                String line = bufferedReader.readLine();
+
+                if (line != null) {
+
+                    String[] currentLine = bufferedReader.readLine().split(",");
+
+                    // Use a switch statement to store the specific data of the line being currently read.
+                    switch (currentLine[0]) {
+
+                        case "Name": this.name = currentLine[1]; break;
+
+                        case "Description": this.description = currentLine[1]; break;
+
+                        case "Country": this.country = currentLine[1]; break;
+
+                        // If the END OF DETAILS is found stop the loop.
+                        case "END OF DETAILS": found = true; break;
+
+                        default: break;
+
+                    }
+
+                }
+
+            } catch (IOException ioException) {
+
+                System.out.println(ioException.getMessage());
+
+            }
+
         }
 
         readStatistics(); // Read the statistics of the Company.
@@ -184,7 +147,16 @@ public class Company {
 
         } catch (FileNotFoundException fileNotFoundException) {
 
-            throw new RuntimeException(fileNotFoundException);
+            // Output an error message.
+            System.out.println(fileNotFoundException.getMessage());
+            JOptionPane.showMessageDialog(
+
+                    null,
+                    "Company file not found.",
+                    "IO Error",
+                    JOptionPane.ERROR_MESSAGE
+
+            );
 
         }
         BufferedReader bufferedReader = new BufferedReader(fileReader);
