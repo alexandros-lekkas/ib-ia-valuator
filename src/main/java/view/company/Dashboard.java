@@ -449,7 +449,7 @@ public class Dashboard extends javax.swing.JFrame {
      */
     private void refreshWindowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshWindowButtonActionPerformed
 
-        logger.info("User clicked RefreshWindowButton.");
+        logger.info("RefreshWindowButton clicked by User.");
 
         setVisible(false);
         Dashboard refresh = new Dashboard(company); // Creates a new instance of the current Dashboard.
@@ -474,10 +474,47 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_openStatisticsButtonActionPerformed
 
     private void estimationMonthsFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estimationMonthsFieldActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_estimationMonthsFieldActionPerformed
 
-    private void predictCompanyValue(java.awt.event.ActionEvent evt) {
+    private void calculateValueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateValueButtonActionPerformed
+
+        logger.info("CalculateValueButton clicked by User.");
+
+        logger.info("Adjusting estimationDialog.");
+        estimationDialog.pack(); // Adjust the dialog to its components.
+        estimationDialog.setLocationRelativeTo(this); // Center the new dialog to the main panel.
+        estimationDialog.setVisible(true);
+
+        logger.info("JDialog created (estimationDialog).");
+
+    }//GEN-LAST:event_calculateValueButtonActionPerformed
+
+    private void updateDetailsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateDetailsButtonActionPerformed
+
+        // TODO: Create detail updating functionality.
+
+    }//GEN-LAST:event_updateDetailsButtonActionPerformed
+
+    /**
+     * Deletes the Company and removes it from the User.
+     *
+     * @param evt The action event triggered by clicking the delete button.
+     */
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+
+        // TODO: Add Company deletion.
+
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
+    /**
+     * Performs the necessary actions when the estimation submit button is clicked.
+     *
+     * @param evt The action event triggered by clicking the estimation submit button.
+     */
+    private void estimationSubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estimationSubmitButtonActionPerformed
+
+        logger.info("EstimationSubmitButton clicked by User.");
 
         logger.info("Predicting " + company.getName() + " value. | Months: " + estimationMonthsField.getText());
 
@@ -502,41 +539,32 @@ public class Dashboard extends javax.swing.JFrame {
 
         }
 
-        estimationDialog.dispose(); // Close the dialog.
+        estimationDialog.dispose();
 
-        JOptionPane.showMessageDialog(this, "The predicted company value for is: " + predictedValue); // Output the dialog.
+        // Output information message.
+        logger.info("Company value predicted. | Predicted Value: " + predictedValue);
+        JOptionPane.showMessageDialog(
 
-    }
+                this,
+                predictedValue,
+                "Predicted Value",
+                JOptionPane.INFORMATION_MESSAGE
 
-    private void calculateValueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateValueButtonActionPerformed
+        );
 
-        estimationDialog.pack(); // Adjust the dialog to its components.
-        estimationDialog.setLocationRelativeTo(this); // Center the new dialog to the main panel.
-        estimationDialog.setVisible(true);
-
-    }//GEN-LAST:event_calculateValueButtonActionPerformed
-
-    private void updateDetailsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateDetailsButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_updateDetailsButtonActionPerformed
-
-    /**
-     * Deletes the current Company.
-     *
-     * @param evt
-     */
-    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-
-        // Nothing
-
-    }//GEN-LAST:event_deleteButtonActionPerformed
-
-    private void estimationSubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estimationSubmitButtonActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_estimationSubmitButtonActionPerformed
 
+    /**
+     * Event handler for when the mergeButton is clicked.
+     *
+     * @param evt The action event triggered by clicking the mergeButton.
+     */
     private void mergeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mergeButtonActionPerformed
-        // TODO add your handling code here:
+
+        logger.info("MergeButton clicked by User.");
+
+        new Merger().setVisible(true);
+
     }//GEN-LAST:event_mergeButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
