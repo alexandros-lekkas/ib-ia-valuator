@@ -193,14 +193,14 @@ public class Statistic {
         }
 
         Data lastDataPoint = extrapolatedData.get(extrapolatedData.size() - 1);
-        int mostRecentYear = lastDataPoint.getYear();
+        int mostRecentYear = lastDataPoint.year();
 
         // Filter data for the most recent year.
         ArrayList<Data> recentYearData = new ArrayList<>();
 
         for (Data extrapolatedDataPoint : extrapolatedData) {
 
-            if (extrapolatedDataPoint.getYear() == mostRecentYear) {
+            if (extrapolatedDataPoint.year() == mostRecentYear) {
 
                 recentYearData.add(extrapolatedDataPoint);
 
@@ -212,14 +212,14 @@ public class Statistic {
         float movingAverage = 0;
         for (Data d : recentYearData) {
 
-            movingAverage += d.getValue();
+            movingAverage += d.value();
 
         }
         movingAverage /= recentYearData.size();
 
         // Extrapolate data using moving average.
-        int lastMonth = lastDataPoint.getMonth();
-        float lastValue = (float) lastDataPoint.getValue();
+        int lastMonth = lastDataPoint.month();
+        float lastValue = (float) lastDataPoint.value();
         for (int i = 1; i <= monthsToExtrapolate; i++) {
 
             int extrapolatedMonth = lastMonth + i;
@@ -254,7 +254,7 @@ public class Statistic {
         // Loop through the data in the statistic and output it.
         for (Data dataPoint : getData()) {
 
-            dataString.append(" ").append(dataPoint.getValue()).append(",");
+            dataString.append(" ").append(dataPoint.value()).append(",");
 
         }
 

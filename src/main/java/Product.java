@@ -7,6 +7,7 @@
 
 import resources.Variables;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -40,9 +41,8 @@ public class Product {
 
     }
 
-
     /**
-     * Creates the required files and folders for the application data.
+     * Creates the necessary directories and files for the application to run.
      *
      * @throws IOException If an I/O error occurs while creating folders or files.
      */
@@ -52,25 +52,44 @@ public class Product {
         String[] paths = {
 
             Variables.dataFolderPath,
-            Variables.dataFolderPath + "/Companies",
-            Variables.dataFolderPath + "/Users",
-            Variables.dataFolderPath + "/authentication.dat"
+            Variables.dataFolderPath + File.separator + "Companies",
+            Variables.dataFolderPath + File.separator + "Users",
+            Variables.dataFolderPath + File.separator + "authentication.dat"
 
         };
 
-        // Loop through all the paths creating them if they don't already exist.
+        // Loop through all paths, creating them if they don't already exist.
         for (String path : paths) {
 
             File fileOrFolder = new File(path);
             if (!fileOrFolder.exists()) {
 
-                if (path.endsWith(".dat")) {
+                try {
 
-                    fileOrFolder.createNewFile();
+                    if (path.endsWith(".dat")) {
 
-                } else {
+                        fileOrFolder.createNewFile();
 
-                    fileOrFolder.mkdirs();
+                    } else {
+
+                        fileOrFolder.mkdirs();
+
+                    }
+
+                } catch (IOException ioException) {
+
+                    // Output an error message.
+                    logger.severe(ioException.getMessage());
+                    JOptionPane.showMessageDialog(
+
+                            null,
+                            "Issue when trying to create APPDATA files, program exiting.\n" +
+                            ioException.getMessage(),
+                            "IO Error",
+                            JOptionPane.ERROR_MESSAGE
+
+                    );
+                    System.exit(0);
 
                 }
 

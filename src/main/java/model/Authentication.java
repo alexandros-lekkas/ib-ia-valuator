@@ -12,6 +12,7 @@ import resources.Variables;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
+
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;

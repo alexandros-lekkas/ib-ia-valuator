@@ -1,4 +1,13 @@
+/*
+ * Copyright (c) 2024 Alexandros Lekkas. All rights reserved.
+ *
+ * This work is a part of the Computer Science Internal Assessment for the International Baccalaureate program by
+ * Alexandros Lekkas. Unauthorized reproduction, distribution, or use of this material is prohibited.
+ */
+
 package view.company;
+
+import model.Company;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
 
@@ -7,13 +16,11 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 /**
- * Company management dashboard to manage and view company details.
- *
- * @author Alexandros Lekkas
+ * The Dashboard class represents a visual dashboard that manages a company.
  */
 public class Dashboard extends javax.swing.JFrame {
 
-    private model.Company company;
+    private Company company;
     private String name;
     private String country;
     private String description;
@@ -81,12 +88,11 @@ public class Dashboard extends javax.swing.JFrame {
         toolsPanel = new javax.swing.JPanel();
         toolsLabel = new javax.swing.JLabel();
         refreshWindowButton = new javax.swing.JButton();
-        openFileLocationButton = new javax.swing.JButton();
-        verifyButton = new javax.swing.JButton();
         menuPanel = new javax.swing.JPanel();
         menuLabel = new javax.swing.JLabel();
         openStatisticsButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        calculateValueButton = new javax.swing.JButton();
+        mergeButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
 
         jButton2.setBackground(new java.awt.Color(0, 51, 102));
@@ -274,10 +280,6 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        openFileLocationButton.setText("Open File Location");
-
-        verifyButton.setText("Verify File");
-
         menuLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         menuLabel.setText("Menu");
 
@@ -288,10 +290,17 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Calculate Value");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        calculateValueButton.setText("Calculate Value");
+        calculateValueButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                calculateValueButtonActionPerformed(evt);
+            }
+        });
+
+        mergeButton.setText("Merge");
+        mergeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mergeButtonActionPerformed(evt);
             }
         });
 
@@ -305,7 +314,9 @@ public class Dashboard extends javax.swing.JFrame {
                     .addGroup(menuPanelLayout.createSequentialGroup()
                         .addComponent(openStatisticsButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)))
+                        .addComponent(calculateValueButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(mergeButton)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         menuPanelLayout.setVerticalGroup(
@@ -314,8 +325,9 @@ public class Dashboard extends javax.swing.JFrame {
                 .addComponent(menuLabel)
                 .addGap(6, 6, 6)
                 .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-                    .addComponent(openStatisticsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(mergeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(openStatisticsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(calculateValueButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -339,11 +351,7 @@ public class Dashboard extends javax.swing.JFrame {
                             .addGroup(toolsPanelLayout.createSequentialGroup()
                                 .addComponent(refreshWindowButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(openFileLocationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(verifyButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(deleteButton)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -356,8 +364,6 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(toolsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(refreshWindowButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(openFileLocationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(verifyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -403,9 +409,7 @@ public class Dashboard extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(titlePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -463,13 +467,13 @@ public class Dashboard extends javax.swing.JFrame {
 
     }                                        
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void calculateValueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateValueButtonActionPerformed
 
         estimationDialog.pack(); // Adjust the dialog to its components.
         estimationDialog.setLocationRelativeTo(this); // Center the new dialog to the main panel.
         estimationDialog.setVisible(true);
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_calculateValueButtonActionPerformed
 
     private void updateDetailsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateDetailsButtonActionPerformed
         // TODO add your handling code here:
@@ -490,7 +494,12 @@ public class Dashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void mergeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mergeButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mergeButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton calculateValueButton;
     private javax.swing.JLabel companyLabel;
     private javax.swing.JTextField companyTextField;
     private javax.swing.JLabel countryLabel;
@@ -503,7 +512,6 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel detailsPanel;
     private javax.swing.JDialog estimationDialog;
     private javax.swing.JButton informationButton;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
@@ -512,14 +520,13 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel mainPanel;
     private javax.swing.JLabel menuLabel;
     private javax.swing.JPanel menuPanel;
-    private javax.swing.JButton openFileLocationButton;
+    private javax.swing.JButton mergeButton;
     private javax.swing.JButton openStatisticsButton;
     private javax.swing.JButton refreshWindowButton;
     private javax.swing.JPanel titlePanel;
     private javax.swing.JLabel toolsLabel;
     private javax.swing.JPanel toolsPanel;
     private javax.swing.JToggleButton updateDetailsButton;
-    private javax.swing.JButton verifyButton;
     // End of variables declaration//GEN-END:variables
 
 }

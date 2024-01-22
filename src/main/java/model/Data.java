@@ -9,61 +9,52 @@ package model;
 
 /**
  * Data represents a single piece of recorded data, including the year, month, and value.
+ *
+ * @param year Year of the recorded piece of data.
+ * @param month Month of the recorded piece of data.
+ * @param value Value of the recorded piece of data.
  */
-public class Data {
-
-    // Year of the recorded piece of data.
-    private final int year;
-
-    // Month of the recorded piece of data.
-    private final int month;
-
-    // Value of the recorded piece of data.
-    private final int value;
+public record Data(int year, int month, int value) {
 
     /**
-     * Constructor for creating a data object used to represent a single piece
-     * of data.
+     * Represents a single piece of recorded data, including the year, month, and value.
      *
-     * @param year The year of the recorded data.
+     * @param year  The year of the recorded data.
      * @param month The month of the recorded data.
      * @param value The value of the recorded data.
      */
-    public Data(int year, int month, int value) {
-
-        this.year = year;
-        this.month = month;
-        this.value = value;
-
-    }
+    public Data { }
 
     /**
      * Returns the year the data was recorded.
      *
      * @return The recorded year of the data.
      */
-    public int getYear() { return this.year; }
+    @Override
+    public int year() { return this.year; }
 
     /**
      * Gets the current month of the data.
      *
      * @return The current month of the data.
      */
-    public int getMonth() { return this.month; }
+    @Override
+    public int month() { return this.month; }
 
     /**
      * Return the value of the current data point.
      *
      * @return The current value of the data.
      */
-    public int getValue() { return this.value; }
-    
+    @Override
+    public int value() { return this.value; }
+
     /**
      * Create a String to represent the data in the data object.
-     * 
+     *
      * @return The data object as a String.
      */
     @Override
-    public String toString() { return "Value: " + getValue() + " - Month: " + getMonth() + " - Year: " + getYear(); }
+    public String toString() { return "Value: " + value() + " - Month: " + month() + " - Year: " + year(); }
 
 }

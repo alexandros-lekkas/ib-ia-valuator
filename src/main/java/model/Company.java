@@ -281,7 +281,7 @@ public class Company {
 
         for (Data dataPoint : data) {
 
-            if (dataPoint.getYear() > currentYear) {
+            if (dataPoint.year() > currentYear) {
 
                 // Check if the previous year was complete
                 if (isYearComplete(monthCount)) {
@@ -291,11 +291,11 @@ public class Company {
                 }
 
                 // Reset for the new year
-                currentYear = dataPoint.getYear();
+                currentYear = dataPoint.year();
                 monthCount = new int[12];
 
             }
-            monthCount[dataPoint.getMonth() - 1]++;
+            monthCount[dataPoint.month() - 1]++;
 
         }
 
@@ -366,9 +366,9 @@ public class Company {
         double sum = 0;
         for (Data data : dataList) {
 
-            if (data.getYear() == year) {
+            if (data.year() == year) {
 
-                sum += data.getValue();
+                sum += data.value();
 
             }
 

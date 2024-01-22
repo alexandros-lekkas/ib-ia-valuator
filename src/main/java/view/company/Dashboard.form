@@ -116,10 +116,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="titlePanel" max="32767" attributes="0"/>
-          <Group type="102" alignment="0" attributes="0">
-              <Component id="mainPanel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          </Group>
+          <Component id="mainPanel" min="-2" max="-2" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -392,11 +389,7 @@
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="refreshWindowButton" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="openFileLocationButton" min="-2" pref="142" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="verifyButton" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="deleteButton" min="-2" pref="63" max="-2" attributes="0"/>
+                                          <Component id="deleteButton" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -415,8 +408,6 @@
                           <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="refreshWindowButton" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                              <Component id="openFileLocationButton" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                              <Component id="verifyButton" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                               <Component id="deleteButton" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -441,16 +432,6 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshWindowButtonActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="openFileLocationButton">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Open File Location"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JButton" name="verifyButton">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Verify File"/>
-                  </Properties>
-                </Component>
                 <Container class="javax.swing.JPanel" name="menuPanel">
 
                   <Layout>
@@ -462,7 +443,9 @@
                                   <Group type="102" attributes="0">
                                       <Component id="openStatisticsButton" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="calculateValueButton" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="mergeButton" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
@@ -475,8 +458,9 @@
                               <Component id="menuLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jButton1" pref="35" max="32767" attributes="0"/>
+                                  <Component id="mergeButton" min="-2" pref="35" max="-2" attributes="0"/>
                                   <Component id="openStatisticsButton" max="32767" attributes="0"/>
+                                  <Component id="calculateValueButton" alignment="0" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
@@ -500,12 +484,20 @@
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openStatisticsButtonActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JButton" name="jButton1">
+                    <Component class="javax.swing.JButton" name="calculateValueButton">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Calculate Value"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="calculateValueButtonActionPerformed"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="mergeButton">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Merge"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mergeButtonActionPerformed"/>
                       </Events>
                     </Component>
                   </SubComponents>

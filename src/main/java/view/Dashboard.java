@@ -232,6 +232,8 @@ public class Dashboard extends javax.swing.JFrame {
      */
     private void removeCompanyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeCompanyButtonActionPerformed
 
+        logger.info("RemoveCompanyButton click by User.");
+
         // Output an information message.
         JOptionPane.showMessageDialog(
 
@@ -252,7 +254,6 @@ public class Dashboard extends javax.swing.JFrame {
      */
     private void addCompanyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCompanyButtonActionPerformed
 
-        // Show the file chooser dialog.
         int result = companyFileChooser.showOpenDialog(this);
 
         // Check the result.
@@ -279,7 +280,6 @@ public class Dashboard extends javax.swing.JFrame {
 
         }
 
-
     }//GEN-LAST:event_addCompanyButtonActionPerformed
 
     /**
@@ -288,17 +288,27 @@ public class Dashboard extends javax.swing.JFrame {
      * @param evt The ComponentEvent that triggered this method.
      */
     private void dashboardPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_dashboardPanelComponentShown
-       
-       
+
     }//GEN-LAST:event_dashboardPanelComponentShown
 
+    /**
+     * Displays an information message to the user when the information button is clicked.
+     *
+     * @param evt The action event that triggered this method.
+     */
     private void informationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_informationButtonActionPerformed
+
+        logger.info("Documentation opened by User.");
 
         // Output an information message.
         JOptionPane.showMessageDialog(
 
             null,
-            "This interface is for logging in or signing up.",
+            """
+            - Add Company Button: Opens a file chooser to select which file you want to get a company from.
+            - Remove Company Button: Opens information popup about how to remove a company.
+            - Company Button: Each company generates as a button, click each one to open its respective dashboard.
+            """,
             "Information",
             JOptionPane.INFORMATION_MESSAGE
 
