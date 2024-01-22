@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2024 Alexandros Lekkas. All rights reserved.
+ *
+ * This work is a part of the Computer Science Internal Assessment for the International Baccalaureate program by
+ * Alexandros Lekkas. Unauthorized reproduction, distribution, or use of this material is prohibited.
+ */
+
 package model;
 
 import java.io.File;
@@ -5,28 +12,45 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
 
 /**
- * Class to represent a company.
- *
- * @author Alexandros Lekkas
+ * Represents a company with its details and statistics.
  */
 public class Company {
 
-    private Company next = null; // Next company in the linked list.
-    private File file; // The company file object.
-    private String filePath; // File path of the company file.
-    private String fileName;
-    private String name; // Name of the company.
-    private String description; // Description of the company.
-    private String country; // Where the company is based.
-    private ArrayList<Statistic> revenues; // ArrayList of the company revenues.
-    private ArrayList<Statistic> costs; // ArrayList of the company costs.
+    // Next Company in the CompanyList linked list.
+    private Company next = null;
+
+    // File object of Company.
+    private File file;
+
+    // The file path of the Company.
+    private final String filePath;
+
+    // The name of the Company file.
+    private final String fileName;
+
+    // The name of the Company.
+    private String name;
+
+    // Description of the Company.
+    private String description;
+
+    // Country of the Company.
+    private String country;
+
+    // ArrayList of Statistic objects representing the revenue streams for the Company.
+    private ArrayList<Statistic> revenues;
+
+    // ArrayList of Statistic objects representing the costs for the Company.
+    private ArrayList<Statistic> costs;
 
     /**
      * Create a new company.
@@ -252,11 +276,11 @@ public class Company {
                     } else { // If not end of statistics...
 
                         // Check if the statistic is a revenue or cost.
-                        if (currentLine[0].toUpperCase().equals("REVENUE")) {
+                        if (currentLine[0].equalsIgnoreCase("REVENUE")) {
 
                             revenues.add(new Statistic(currentLine[1], this.filePath));
 
-                        } else if (currentLine[0].toUpperCase().equals("COST")) {
+                        } else if (currentLine[0].equalsIgnoreCase("COST")) {
 
                             costs.add(new Statistic(currentLine[1], this.filePath));
 

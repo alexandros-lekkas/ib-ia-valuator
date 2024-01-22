@@ -57,7 +57,12 @@ public final class CompanyList {
                 if (companyFileName.toLowerCase().endsWith(".csv")) {
 
                     // Create a new Company object and add it to the linked list.
-                    Company company = new Company(Variables.dataFolderPath + "/Companies/" + companyFileName, companyFileName);
+                    Company company = new Company(
+
+                            Variables.dataFolderPath+ "/Companies/" + companyFileName,
+                            companyFileName
+
+                    );
                     this.add(company);
 
                 } else {
@@ -129,7 +134,7 @@ public final class CompanyList {
     }
 
     /**
-     * Removes a Company object from the linked list.
+     * Removes a specified Company object from the linked list.
      *
      * @param company The Company object to be removed.
      */
@@ -138,7 +143,7 @@ public final class CompanyList {
         Company current = head;
         Company previous = null;
 
-        // If the head node holds the company to be deleted.
+        // If the head node holds the Company to be deleted.
         if ((current != null) && (current == company)) {
 
             head = current.getNext();
@@ -146,7 +151,7 @@ public final class CompanyList {
 
         }
 
-        // Search for the company to be deleted.
+        // Search for the Company to be deleted.
         while ((current != null) && (current != company)) {
 
             previous = current;
@@ -154,7 +159,7 @@ public final class CompanyList {
 
         }
 
-        // If the company was not in the linked list.
+        // If Company was not in the linked list.
         if (current == null) {
 
             return;
@@ -166,56 +171,64 @@ public final class CompanyList {
     }
 
     /**
-     * Re-writes the file with the updated linked list.
+     * Saves the list of company file names to a file.
      */
     public void save() {
 
         StringBuilder stringBuilder = new StringBuilder();
         Company current = head;
 
+        // Loop through the CompanyList and add to Company.
         while (current != null) {
 
             stringBuilder.append(current.getFileName());
             current = current.getNext();
 
-            if (current != null) {
-                stringBuilder.append(",");
-            }
+            if (current != null) { stringBuilder.append(","); } // Add a comma.
 
         }
 
+        // Attempt to write the updated CompanyList to file.
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(this.filePath))) {
 
             bufferedWriter.write(stringBuilder.toString());
 
         } catch (IOException error) {
 
-            JOptionPane.showMessageDialog(null, "There was an error writing to the file!", "IO Error", JOptionPane.ERROR_MESSAGE);
+            // Output error message.
+            JOptionPane.showMessageDialog(
+
+                    null,
+                    "Error writing to file.",
+                    "IO Error",
+                    JOptionPane.ERROR_MESSAGE
+
+            );
 
         }
 
     }
 
     /**
-     * Get the company list as a string.
+     * Returns a string representation of the CompanyList object.
      *
-     * @return String of the companies.
+     * @return A string containing the names of the companies in the CompanyList.
      */
     @Override
     public String toString() {
 
         Company current = head;
-        String string = "Companies: ";
+        StringBuilder string = new StringBuilder("Companies: ");
 
         // Loop through linked list and create a String.
         while (current != null) {
 
-            string = string + current.getName() + ", ";
+            string.append(current.getName()).append(", ");
             current = current.getNext();
 
         }
 
-        return string;
+        return string.toString();
 
     }
 
@@ -263,11 +276,11 @@ public final class CompanyList {
     }
 
     /**
-     * Check if the company already exists (file wise).
+     * Checks if a file with the given file name exists in the CompanyList.
      *
-     * @param fileName The file name of the company to search for in the linked
-     * list.
-     * @return Whether or not the company being searched for exists in the list.
+     * @param fileName The name of the file to search for.
+     *
+     * @return True if the file exists in the CompanyList, false otherwise.
      */
     public boolean exists(String fileName) {
 
