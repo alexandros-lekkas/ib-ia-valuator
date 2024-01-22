@@ -279,6 +279,7 @@ public class Company {
      * Calculates the value of a company with extrapolation if specified.
      *
      * @param monthsToExtrapolate How many months to extrapolate the data for.
+     *
      * @return The valuation of the company.
      */
     public int calculateFinalValue(int monthsToExtrapolate) {
@@ -302,6 +303,13 @@ public class Company {
 
     }
 
+    /**
+     * Finds the most recent complete year from the given list of data points.
+     *
+     * @param data The list of data points.
+     *
+     * @return The most recent complete year.
+     */
     private int findMostRecentCompleteYear(ArrayList<Data> data) {
 
         int currentYear = Integer.MIN_VALUE;
@@ -332,15 +340,18 @@ public class Company {
             return currentYear;
         }
 
-        throw new IllegalStateException("No complete year data available.");
+        return currentYear;
 
     }
 
     /**
-     * Checks if the year is complete from data provided.
+     * Checks if a year is complete based on the count of data points for each month.
+     * A year is considered complete if there is at least one data point for each month.
      *
-     * @param monthCount
-     * @return
+     * @param monthCount An array of counts for each month. The index represents the month, and the value represents the count of data points for that month.
+     *                   The array should have a length of 12.
+     *
+     * @return True if the year is complete, false otherwise.
      */
     private boolean isYearComplete(int[] monthCount) {
 
@@ -354,10 +365,18 @@ public class Company {
 
         }
 
-        return true; // Year is complete if all months have data
+        return true; // Year is complete if all months have data.
 
     }
 
+    /**
+     * Extrapolates the data from the given list of statistics for the specified number of months.
+     *
+     * @param statistics The list of statistics to extrapolate the data from.
+     * @param monthsToExtrapolate The number of months to extrapolate the data for.
+     *
+     * @return An ArrayList of Data objects containing the extrapolated data.
+     */
     private ArrayList<Data> extrapolateAllData(ArrayList<Statistic> statistics, int monthsToExtrapolate) {
 
         ArrayList<Data> allData = new ArrayList<>();
@@ -372,11 +391,11 @@ public class Company {
     }
 
     /**
-     * Sums the data for the current year.
+     * Calculates the sum of data values for a specific year.
      *
-     * @param dataList
-     * @param year
-     * @return
+     * @param dataList An ArrayList of Data objects containing the data points.
+     * @param year The year for which to calculate the sum.
+     * @return The sum of data values for the specified year.
      */
     private double sumDataForYear(ArrayList<Data> dataList, int year) {
 
