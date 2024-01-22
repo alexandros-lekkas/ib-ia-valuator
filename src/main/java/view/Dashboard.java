@@ -1,6 +1,7 @@
 package view;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -247,21 +248,7 @@ public class Dashboard extends javax.swing.JFrame {
             
             company = current;
 
-            JButton companyButton = new JButton(company.getName()); // Create a new button for the company.
-            
-            // Make the button fill the horizontal space.
-            companyButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
-            companyButton.setMinimumSize(new Dimension(Integer.MAX_VALUE, 50));
-            companyButton.setPreferredSize(new Dimension(80, 50));
-            companyButton.setAlignmentX(Component.CENTER_ALIGNMENT); // Align the button.
-
-            // Add event to the button.
-            companyButton.addActionListener((ActionEvent event) -> {
-                
-                
-                new view.company.Dashboard(company).setVisible(true);
-                
-            });
+            JButton companyButton = createCompanyButton();
 
             // Add the button to the panel, not the JScrollPane.
             buttonPanel.add(companyButton);
@@ -272,6 +259,32 @@ public class Dashboard extends javax.swing.JFrame {
         // Set the button panel as the view for the JScrollPane.
         companyScrollPane.setViewportView(buttonPanel);
         
+    }
+
+    /**
+     * Creates a button for a company.
+     *
+     * @return The JButton representing the company.
+     */
+    private JButton createCompanyButton() {
+
+        JButton companyButton = new JButton(company.getName()); // Create a new button for the company.
+
+        // Make the button fill the horizontal space.
+        companyButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+        companyButton.setMinimumSize(new Dimension(Integer.MAX_VALUE, 50));
+        companyButton.setPreferredSize(new Dimension(80, 50));
+        companyButton.setAlignmentX(Component.CENTER_ALIGNMENT); // Align the button.
+
+        // Add event to the button.
+        companyButton.addActionListener((ActionEvent event) -> {
+
+            new view.company.Dashboard(company).setVisible(true);
+
+        });
+
+        return companyButton;
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

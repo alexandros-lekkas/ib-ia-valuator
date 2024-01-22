@@ -12,6 +12,7 @@ import resources.Variables;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
+import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 
@@ -19,6 +20,9 @@ import javax.swing.JOptionPane;
  * Class for user authentication.
  */
 public class Authentication {
+
+    // Logging.
+    private static final Logger logger = Logger.getLogger(Authentication.class.getName());
 
     // File path of the userbase. The file that stores the User database.
     private final String userbaseFilePath = Variables.dataFolderPath + "/userbase.dat";
