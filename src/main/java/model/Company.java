@@ -113,6 +113,7 @@ public class Company {
             
         } catch (IOException ioException) {
 
+            // Send error message.
             logger.severe(ioException.getMessage());
             JOptionPane.showMessageDialog(
 
