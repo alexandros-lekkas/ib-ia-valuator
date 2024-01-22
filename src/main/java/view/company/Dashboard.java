@@ -44,7 +44,7 @@ public class Dashboard extends javax.swing.JFrame {
      *
      * @param company The company for which the Dashboard is created.
      */
-    public Dashboard(model.Company company) {
+    public Dashboard(Company company) {
 
         this.company = company;
         this.name = company.getName();
@@ -85,12 +85,12 @@ public class Dashboard extends javax.swing.JFrame {
     private void initComponents() {
 
         estimationDialog = new javax.swing.JDialog();
-        jPanel1 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        estimationPanel = new javax.swing.JPanel();
+        estimationSubmitButton = new javax.swing.JButton();
+        estimationMonthsField = new javax.swing.JTextField();
+        estimationLabel = new javax.swing.JLabel();
         titlePanel = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        titleLabel = new javax.swing.JLabel();
         informationButton = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
         dashboardPanel = new javax.swing.JPanel();
@@ -113,47 +113,47 @@ public class Dashboard extends javax.swing.JFrame {
         mergeButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
 
-        jButton2.setBackground(new java.awt.Color(0, 51, 102));
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Submit");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        estimationSubmitButton.setBackground(new java.awt.Color(0, 51, 102));
+        estimationSubmitButton.setForeground(new java.awt.Color(255, 255, 255));
+        estimationSubmitButton.setText("Submit");
+        estimationSubmitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                estimationSubmitButtonActionPerformed(evt);
             }
         });
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        estimationMonthsField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                estimationMonthsFieldActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("Input for how many months you want to predict the value.");
+        estimationLabel.setText("Input for how many months you want to predict the value.");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout estimationPanelLayout = new javax.swing.GroupLayout(estimationPanel);
+        estimationPanel.setLayout(estimationPanelLayout);
+        estimationPanelLayout.setHorizontalGroup(
+            estimationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(estimationPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(estimationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(estimationPanelLayout.createSequentialGroup()
+                        .addComponent(estimationMonthsField, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(estimationSubmitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(estimationLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        estimationPanelLayout.setVerticalGroup(
+            estimationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(estimationPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(estimationLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(estimationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(estimationMonthsField, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(estimationSubmitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -163,14 +163,14 @@ public class Dashboard extends javax.swing.JFrame {
             estimationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(estimationDialogLayout.createSequentialGroup()
                 .addGap(35, 35, 35)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(estimationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(47, Short.MAX_VALUE))
         );
         estimationDialogLayout.setVerticalGroup(
             estimationDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, estimationDialogLayout.createSequentialGroup()
                 .addContainerGap(35, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(estimationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35))
         );
 
@@ -181,9 +181,9 @@ public class Dashboard extends javax.swing.JFrame {
 
         titlePanel.setBackground(new java.awt.Color(0, 51, 102));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Company Dashboard");
+        titleLabel.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        titleLabel.setForeground(new java.awt.Color(255, 255, 255));
+        titleLabel.setText("Company Dashboard");
 
         informationButton.setBackground(new java.awt.Color(255, 255, 255));
         informationButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -198,14 +198,14 @@ public class Dashboard extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(informationButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3)
+                .addComponent(titleLabel)
                 .addGap(69, 69, 69))
         );
         titlePanelLayout.setVerticalGroup(
             titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, titlePanelLayout.createSequentialGroup()
                 .addContainerGap(11, Short.MAX_VALUE)
-                .addComponent(jLabel3)
+                .addComponent(titleLabel)
                 .addGap(9, 9, 9))
             .addGroup(titlePanelLayout.createSequentialGroup()
                 .addContainerGap()
@@ -461,35 +461,44 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_refreshWindowButtonActionPerformed
 
     /**
-     * When open statistics button is pressed open the statistics window the
-     * company.
+     * Opens the statistics interface when the open statistics button is clicked.
      *
-     * @param evt
+     * @param evt The action event triggered by clicking the open statistics button.
      */
     private void openStatisticsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openStatisticsButtonActionPerformed
+
+        logger.info("OpenStatisticsButton clicked by User.");
 
         new view.company.statistics.Dashboard(this.company).setVisible(true); // Open the statistics interface.
 
     }//GEN-LAST:event_openStatisticsButtonActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void estimationMonthsFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estimationMonthsFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_estimationMonthsFieldActionPerformed
 
     private void predictCompanyValue(java.awt.event.ActionEvent evt) {
 
-        System.out.println("[>] Predicting for " + jTextField1.getText() + "months."); // Get the user's input from the text field.
+        logger.info("Predicting " + company.getName() + " value. | Months: " + estimationMonthsField.getText());
 
         // Attempt to get user input and calculate the value.
         int predictedValue = 0;
         try {
 
-            predictedValue = company.calculateFinalValue(Integer.parseInt(jTextField1.getText())); // Get the input from the text field.
+            predictedValue = company.calculateFinalValue(Integer.parseInt(estimationMonthsField.getText())); // Get the input from the text field.
 
-        } catch (NumberFormatException exception) { // User inputs something other than int.
+        } catch (NumberFormatException numberFormatException) {
 
-            System.out.println("[!] User inputted something other than integer for company prediction.");
-            JOptionPane.showMessageDialog(null, "Invalid statistic data. Values cannot be set to null!", "Error", JOptionPane.ERROR_MESSAGE);
+            // Output error message.
+            logger.severe(numberFormatException.getMessage());
+            JOptionPane.showMessageDialog(
+
+                    null,
+                    "Invalid statistic data. Values cannot be null!",
+                    "IO Error",
+                    JOptionPane.ERROR_MESSAGE
+
+            );
 
         }
 
@@ -522,9 +531,9 @@ public class Dashboard extends javax.swing.JFrame {
 
     }//GEN-LAST:event_deleteButtonActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void estimationSubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estimationSubmitButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_estimationSubmitButtonActionPerformed
 
     private void mergeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mergeButtonActionPerformed
         // TODO add your handling code here:
@@ -543,18 +552,18 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel detailsLabel;
     private javax.swing.JPanel detailsPanel;
     private javax.swing.JDialog estimationDialog;
+    private javax.swing.JLabel estimationLabel;
+    private javax.swing.JTextField estimationMonthsField;
+    private javax.swing.JPanel estimationPanel;
+    private javax.swing.JButton estimationSubmitButton;
     private javax.swing.JButton informationButton;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JLabel menuLabel;
     private javax.swing.JPanel menuPanel;
     private javax.swing.JButton mergeButton;
     private javax.swing.JButton openStatisticsButton;
     private javax.swing.JButton refreshWindowButton;
+    private javax.swing.JLabel titleLabel;
     private javax.swing.JPanel titlePanel;
     private javax.swing.JLabel toolsLabel;
     private javax.swing.JPanel toolsPanel;
