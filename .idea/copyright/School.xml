@@ -1,0 +1,6 @@
+<component name="CopyrightManager">
+  <copyright>
+    <option name="notice" value="Copyright (c) &amp;#36;originalComment.match(&quot;Copyright \(c\) (\d+)&quot;, 1, &quot;-&quot;, &quot;&amp;#36;today.year&quot;)&amp;#36;today.year Alexandros Lekkas. All rights reserved.&#10;&#10;This work is a part of the Computer Science Internal Assessment for the International Baccalaureate program by&#10;Alexandros Lekkas. Unauthorized reproduction, distribution, or use of this material is prohibited." />
+    <option name="myName" value="School" />
+  </copyright>
+</component>

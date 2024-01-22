@@ -1,6 +1,7 @@
 package view.company;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
+
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -85,13 +86,14 @@ public class Dashboard extends javax.swing.JFrame {
         menuLabel = new javax.swing.JLabel();
         openStatisticsButton = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        deleteButton = new javax.swing.JButton();
 
         jButton2.setBackground(new java.awt.Color(0, 51, 102));
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Submit");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                predictCompanyValue(evt);
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -305,12 +307,20 @@ public class Dashboard extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        deleteButton.setText("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout toolsPanelLayout = new javax.swing.GroupLayout(toolsPanel);
         toolsPanel.setLayout(toolsPanelLayout);
         toolsPanelLayout.setHorizontalGroup(
             toolsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(toolsPanelLayout.createSequentialGroup()
                 .addGroup(toolsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(menuPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(toolsPanelLayout.createSequentialGroup()
                         .addGroup(toolsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(toolsLabel)
@@ -319,9 +329,10 @@ public class Dashboard extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(openFileLocationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(verifyButton)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(menuPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(verifyButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         toolsPanelLayout.setVerticalGroup(
@@ -334,7 +345,8 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGroup(toolsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(refreshWindowButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(openFileLocationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(verifyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(verifyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -437,7 +449,7 @@ public class Dashboard extends javax.swing.JFrame {
 
         JOptionPane.showMessageDialog(this, "The predicted company value for is: " + predictedValue); // Output the dialog.
 
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }                                        
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
@@ -451,12 +463,24 @@ public class Dashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_updateDetailsButtonActionPerformed
 
+    /**
+     * Deletes the current Company.
+     * 
+     * @param evt 
+     */
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        
+        boolean deleted = companyList.remove(company.getFileName());
+        
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel companyLabel;
     private javax.swing.JTextField companyTextField;
     private javax.swing.JLabel countryLabel;
     private javax.swing.JTextField countryTextField;
     private javax.swing.JPanel dashboardPanel;
+    private javax.swing.JButton deleteButton;
     private javax.swing.JLabel descriptionLabel;
     private javax.swing.JTextField descriptionTextField;
     private javax.swing.JLabel detailsLabel;

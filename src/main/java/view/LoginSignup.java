@@ -1,15 +1,14 @@
 package view;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
+
 import java.awt.Color;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.JOptionPane;
 
 /**
- * Login and signup interface
- *
- * @author Alexandros Lekkas
+ * Interface for logging in and signing up.
  */
 public final class LoginSignup extends javax.swing.JFrame {
 
@@ -328,7 +327,7 @@ public final class LoginSignup extends javax.swing.JFrame {
      *
      * @param evt
      */
-    private void usernameTextFieldFocusGained(java.awt.event.FocusEvent evt) { //GEN-FIRST:event_usernameTextFieldFocusGained
+    private void usernameTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_usernameTextFieldFocusGained
 
         if (usernameTextField.getText().equals("Enter your username")) {
 
@@ -337,7 +336,7 @@ public final class LoginSignup extends javax.swing.JFrame {
 
         }
 
-    } //GEN-LAST:event_usernameTextFieldFocusGained
+    }//GEN-LAST:event_usernameTextFieldFocusGained
 
     /**
      * Main method for testing

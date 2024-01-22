@@ -1,82 +1,73 @@
+/*
+ * Copyright (c) 2024 Alexandros Lekkas. All rights reserved.
+ *
+ * This work is a part of the Computer Science Internal Assessment for the International Baccalaureate program by
+ * Alexandros Lekkas. Unauthorized reproduction, distribution, or use of this material is prohibited.
+ */
+
+import resources.Variables;
 
 import java.io.File;
 import java.io.IOException;
 
 /**
- * The main class for the program. Running this runs the entirety of the program.
- *
- * @author Alexandros Lekkas
+ * The Valuator class is the entry point of the application. It is responsible for creating the necessary folders and
+ * files for storing application data and launching the LoginSignup interface.
  */
 public class Valuator {
 
     /**
-     * When the class is run, if the app data does not already have a folder to
-     * hold its data it creates one. After that, the program opens the
-     * LoginSignup interface.
+     * The main method is the entry point of the Valuator application. It is responsible for creating the necessary
+     * folders and files for storing application data and launching the LoginSignup interface.
      *
-     * @param args Arguments for the main.
+     * @param args The command-line arguments. Not used in this method.
      *
-     * @throws IOException In the scenario that there is an issue with accessing
-     *                     files the program throws an IOException.
+     * @throws IOException If an I/O error occurs while creating folders or files.
      */
     public static void main(String[] args) throws IOException {
 
-        
-        // Set the folder for the application's data to the APPDATA path.
-        resources.Variables.setDataFolderPath(System.getenv("APPDATA") + "/Valuator");
+        Variables.setDataFolderPath(System.getenv("APPDATA") + "/Valuator"); // Set folder for application data.
+        createRequiredFilesAndFolders(); // Creates required files and folders.
 
-        // Create the main folder if it does not already exist.
-        File appDataFolder = new File(resources.Variables.dataFolderPath);
-        if (!appDataFolder.exists()) {
-
-            boolean mkdirs = appDataFolder.mkdirs();
-
-        }
-
-        // Create the folder for the companies if it does not already exist.
-        File userbaseFile = getFile();
-        if (!userbaseFile.exists()) {
-
-            boolean newFile;
-            newFile = userbaseFile.createNewFile();
-
-        }
-
-        // Create a new LoginSignup interface.
-        new view.LoginSignup().setVisible(true);
-
+        new view.LoginSignup().setVisible(true); // Output a new LoginSignup interface.
     }
 
     /**
-     * Check if a file or folder exists, create it if it does not.
-     * 
-     * @return The File object created.
+     * Creates the required files and folders for the application data.
+     *
+     * @throws IOException If an I/O error occurs while creating folders or files.
      */
-    private static File getFile() {
+    private static void createRequiredFilesAndFolders() throws IOException {
 
-        // Create companies folder.
-        String companiesFolderPath = resources.Variables.dataFolderPath+ "/Companies";
-        File companiesFolder = new File(companiesFolderPath);
-        if (!companiesFolder.exists()) {
+        // Create required folders and files.
+        String[] paths = {
 
-            boolean mkdirs;
-            mkdirs = companiesFolder.mkdirs();
+            Variables.dataFolderPath,
+            Variables.dataFolderPath + "/Companies",
+            Variables.dataFolderPath + "/Users",
+            Variables.dataFolderPath + "/authentication.dat"
+
+        };
+
+        // Loop through all the paths creating them if they don't already exist.
+        for (String path : paths) {
+
+            File fileOrFolder = new File(path);
+            if (!fileOrFolder.exists()) {
+
+                if (path.endsWith(".dat")) {
+
+                    fileOrFolder.createNewFile();
+
+                } else {
+
+                    fileOrFolder.mkdirs();
+
+                }
+
+            }
 
         }
-
-        // Create Users folder.
-        String usersFolderPath = resources.Variables.dataFolderPath + "/Users";
-        File usersFolder = new File(usersFolderPath);
-        if (!usersFolder.exists()) {
-
-            boolean mkdirs;
-            mkdirs = usersFolder.mkdirs();
-
-        }
-
-        // Userbase RandomAccessFile (.dat) file.
-        String userbaseFilePath = resources.Variables.dataFolderPath + "/authentication.dat";
-        return new File(userbaseFilePath);
 
     }
 
