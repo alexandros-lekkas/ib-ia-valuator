@@ -9,26 +9,40 @@ package view.company;
 
 import model.Company;
 
+import view.LoginSignup;
+
 import com.formdev.flatlaf.FlatIntelliJLaf;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import java.util.logging.Logger;
+
 /**
  * The Dashboard class represents a visual dashboard that manages a company.
  */
 public class Dashboard extends javax.swing.JFrame {
 
-    private Company company;
+    // Logging.
+    private static final Logger logger = Logger.getLogger(LoginSignup.class.getName());
+
+    // Company of which the dashboard belongs to.
+    private final Company company;
+
+    // Name of the Company.
     private String name;
+
+    // Country of the Company.
     private String country;
+
+    // Description of the Company.
     private String description;
 
     /**
-     * Creates new form Dashboard.
+     * Creates a Dashboard for the given company.
      *
-     * @param company The company that the dashboard is managing.
+     * @param company The company for which the Dashboard is created.
      */
     public Dashboard(model.Company company) {
 
@@ -42,18 +56,22 @@ public class Dashboard extends javax.swing.JFrame {
 
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
 
-        } catch (UnsupportedLookAndFeelException error) { // Catch a look and feel error.
+        } catch (UnsupportedLookAndFeelException unsupportedLookAndFeelException) { // Catch a look and feel error.
 
-            JOptionPane.showMessageDialog(null, "Visual settings not loaded properly!", "Error", JOptionPane.ERROR_MESSAGE);
+            // Output error message.
+            logger.severe(unsupportedLookAndFeelException.getMessage());
+            JOptionPane.showMessageDialog(
+
+                    null,
+                    "Unsupported look and feel.",
+                    "Look & Feel Error",
+                    JOptionPane.ERROR_MESSAGE
+
+            );
 
         }
 
-        // Initialise the co on a new thread.
-        java.awt.EventQueue.invokeLater(() -> {
-            
-            initComponents();
-            
-        });
+        java.awt.EventQueue.invokeLater(this::initComponents);
 
     }
 
@@ -424,8 +442,22 @@ public class Dashboard extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Refreshes the current window when the refresh window button is clicked.
+     *
+     * @param evt The action event triggered by clicking the refresh window button.
+     */
     private void refreshWindowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshWindowButtonActionPerformed
-        // TODO add your handling code here:
+
+        logger.info("User clicked RefreshWindowButton.");
+
+        setVisible(false);
+        Dashboard refresh = new Dashboard(company); // Creates a new instance of the current Dashboard.
+        refresh.setVisible(true);
+        dispose();
+
+        logger.info("Company Dashboard " + company.getName() + " refreshed.");
+
     }//GEN-LAST:event_refreshWindowButtonActionPerformed
 
     /**
@@ -447,25 +479,25 @@ public class Dashboard extends javax.swing.JFrame {
     private void predictCompanyValue(java.awt.event.ActionEvent evt) {
 
         System.out.println("[>] Predicting for " + jTextField1.getText() + "months."); // Get the user's input from the text field.
-        
+
         // Attempt to get user input and calculate the value.
         int predictedValue = 0;
         try {
-            
+
             predictedValue = company.calculateFinalValue(Integer.parseInt(jTextField1.getText())); // Get the input from the text field.
 
         } catch (NumberFormatException exception) { // User inputs something other than int.
-            
+
             System.out.println("[!] User inputted something other than integer for company prediction.");
             JOptionPane.showMessageDialog(null, "Invalid statistic data. Values cannot be set to null!", "Error", JOptionPane.ERROR_MESSAGE);
-            
+
         }
 
         estimationDialog.dispose(); // Close the dialog.
 
         JOptionPane.showMessageDialog(this, "The predicted company value for is: " + predictedValue); // Output the dialog.
 
-    }                                        
+    }
 
     private void calculateValueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateValueButtonActionPerformed
 
@@ -481,13 +513,13 @@ public class Dashboard extends javax.swing.JFrame {
 
     /**
      * Deletes the current Company.
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        
+
         // Nothing
-        
+
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

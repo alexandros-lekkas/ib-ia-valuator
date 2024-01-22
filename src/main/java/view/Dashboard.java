@@ -325,7 +325,7 @@ public class Dashboard extends javax.swing.JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 
-        model.Company current = companies.getHead(); // Get the first company in the linked list.
+        Company current = companies.getHead(); // Get the first company in the linked list.
 
         // Loop through the linked list creating company buttons for each company.
         while (current != null) {
