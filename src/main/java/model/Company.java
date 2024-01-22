@@ -98,7 +98,7 @@ public class Company {
 
                 if (line != null) {
 
-                    String[] currentLine = bufferedReader.readLine().split(",");
+                    String[] currentLine = line.split(",");
 
                     // Use a switch statement to store the specific data of the line being currently read.
                     switch (currentLine[0]) {
