@@ -1,32 +1,43 @@
+/*
+ * Copyright (c) 2024 Alexandros Lekkas. All rights reserved.
+ *
+ * This work is a part of the Computer Science Internal Assessment for the International Baccalaureate program by
+ * Alexandros Lekkas. Unauthorized reproduction, distribution, or use of this material is prohibited.
+ */
+
 package model;
 
+import javax.swing.*;
+
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+
 import java.util.ArrayList;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Allows for the creation of a statistic that is loaded when reading the
- * company file.
- *
- * @author Alexandros Lekkas
+ * Statistic represents a statistic with a name and corresponding data points.
  */
 public class Statistic {
 
-    private String name = "Name"; // Name of the statistic.
-    private String filePath = null; // File path of the statistic (in which company file it is located).
-    private ArrayList<Data> data = null; // ArrayList of data points.
+    // Logging.
+    private static final Logger logger = Logger.getLogger(Authentication.class.getName());
+
+    // Name of Statistic, not subject to change.
+    private final String name;
+
+    // File path to the Statistic (Company file in which it is loaded).
+    private String filePath = null;
+
+    // ArrayList of Data.
+    private final ArrayList<Data> data;
 
     /**
-     * Creates a unique statistic object used to track that statistic.
+     * Constructs a Statistic object with the given name and file path.
      *
-     * @param name Name of the statistic (used as an identifier when searching
-     * through the files to find.
-     * @param filePath The file path of the company from which the statistic
-     * belongs to.
+     * @param name The name of the statistic.
+     * @param filePath The file path to read data from.
      */
     public Statistic(String name, String filePath) {
 
@@ -37,8 +48,7 @@ public class Statistic {
     }
 
     /**
-     * Statistic constructor with data existing. Used to model a statistic
-     * separately from a company - such as in the case of company valuation
+     * Statistic constructor with data existing. Used to model a statistic separately from a company.
      *
      * @param name Name of the statistic.
      * @param data Data provided by the user that belongs to the statistic.
@@ -55,22 +65,18 @@ public class Statistic {
      *
      * @return The name of the statistic.
      */
-    public String getName() {
-
-        return name;
-
-    }
+    public String getName() { return name; }
 
     /**
-     * Read the data related to the specific statistic and store it in the
-     * ArrayList of Data objects.
+     * Reads data from a file and populates the data list of the statistic object. This method searches for the
+     * statistic in the file based on the name provided. It then reads the data associated with the statistic and saves
+     * it as Data objects in the data list.
      */
     public void readData() {
 
-        FileReader fileReader;
         try {
 
-            fileReader = new FileReader(this.filePath);
+            FileReader fileReader = new FileReader(this.filePath);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             // Find where the statistic is in the file.
@@ -81,12 +87,12 @@ public class Statistic {
 
                 try {
 
-                    if (currentLine[1].toUpperCase().equals(name.toUpperCase())) {
+                    if (currentLine[1].equalsIgnoreCase(name)) {
 
                         String[] nextLine = bufferedReader.readLine().split(",");
 
                         int i = 3; // First year should be defined at index position 3.
-                        while (!currentLine[i].equals("")) { // Loop through to each year that is part of the statistic.
+                        while (!currentLine[i].isEmpty()) { // Loop through to each year that is part of the statistic.
 
                             int year = Integer.parseInt(currentLine[i]); // Get the year that belongs to this year of data.
                             int j = 4; // The next index.
@@ -101,9 +107,15 @@ public class Statistic {
 
                                 }
                                 
-                            } catch (NumberFormatException ex) {
+                            } catch (NumberFormatException numberFormatExceptions) {
 
-                                System.out.println("[!] Issue with number formatting. Skipping.");
+                                logger.warning(
+
+                                        "Number format issue. Skipping over value.\n"
+                                        + numberFormatExceptions.getMessage()
+
+                                );
+                                
                             }
 
                             i = i + 14; // Skip to the next year.
@@ -114,57 +126,44 @@ public class Statistic {
 
                     }
 
-                } catch (ArrayIndexOutOfBoundsException ex) {
+                } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
 
-                    // Do nothing, as this just means that the line is blank so we just ignore it and ignore the error.
+                    // Log warning message.
+                    logger.warning(
+
+                            "Array index is out of bounds, skipping over.\n" +
+                            arrayIndexOutOfBoundsException.getMessage()
+
+                    );
+
                 }
 
             }
 
-        } catch (FileNotFoundException ex) {
+        } catch (IOException ioException) {
 
-            Logger.getLogger(Statistic.class.getName()).log(Level.SEVERE, null, ex);
+            // Output error message.
+            logger.severe(ioException.getMessage());
+            JOptionPane.showMessageDialog(
 
-        } catch (IOException ex) {
+                    null,
+                    "Error when trying to register.",
+                    "IO Error",
+                    JOptionPane.ERROR_MESSAGE
 
-            Logger.getLogger(Statistic.class.getName()).log(Level.SEVERE, null, ex);
+            );
 
-        } catch (NullPointerException ex) {
+        } catch (NullPointerException nullPointerException) {
 
-            // Does not matter because line may be blank.
-        }
+            // Log warning message.
+            logger.warning(
 
-    }
+                    "Null pointer, does not matter line is probably blank.\n" +
+                    nullPointerException.getMessage()
 
-    /**
-     * Returns the data as an ArrayList of Data objects.
-     *
-     * @return The ArrayList of data objects,
-     */
-    public ArrayList<model.Data> getData() {
-
-        return data;
-
-    }
-
-    /**
-     * Outputs information about the statistic as a string.
-     *
-     * @return Statistic represented as a string.
-     */
-    @Override
-    public String toString() {
-
-        String dataString = "Data: ";
-
-        // Loop through the data in the statistic and output it.
-        for (Data dataPoint : getData()) {
-
-            dataString = dataString + " " + dataPoint.getValue() + ",";
+            );
 
         }
-
-        return "Name: " + this.name + " - File path: " + this.filePath + " - " + dataString;
 
     }
 
@@ -241,5 +240,33 @@ public class Statistic {
         return extrapolatedData;
 
     }
+
+    /**
+     * Outputs information about the statistic as a String.
+     *
+     * @return Statistic represented as a String.
+     */
+    @Override
+    public String toString() {
+
+        StringBuilder dataString = new StringBuilder("Data: ");
+
+        // Loop through the data in the statistic and output it.
+        for (Data dataPoint : getData()) {
+
+            dataString.append(" ").append(dataPoint.getValue()).append(",");
+
+        }
+
+        return "Name: " + this.name + " - File path: " + this.filePath + " - " + dataString;
+
+    }
+
+    /**
+     * Returns the data as an ArrayList of Data objects.
+     *
+     * @return The ArrayList of data objects.
+     */
+    public ArrayList<model.Data> getData() { return data; }
 
 }

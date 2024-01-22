@@ -146,6 +146,7 @@ public class Dashboard extends javax.swing.JFrame {
 
         titlePanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        informationButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -167,20 +168,31 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Company Statistics");
 
+        informationButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        informationButton.setForeground(new java.awt.Color(0, 51, 153));
+        informationButton.setText("i");
+
         javax.swing.GroupLayout titlePanelLayout = new javax.swing.GroupLayout(titlePanel);
         titlePanel.setLayout(titlePanelLayout);
         titlePanelLayout.setHorizontalGroup(
             titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(titlePanelLayout.createSequentialGroup()
-                .addGap(102, 102, 102)
+                .addContainerGap()
+                .addComponent(informationButton)
+                .addGap(65, 65, 65)
                 .addComponent(jLabel3)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         titlePanelLayout.setVerticalGroup(
             titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(titlePanelLayout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jLabel3)
+                .addGroup(titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(titlePanelLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel3))
+                    .addGroup(titlePanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(informationButton)))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
@@ -298,6 +310,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane costsScrollPane;
+    private javax.swing.JButton informationButton;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;

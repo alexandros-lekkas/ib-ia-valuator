@@ -1,10 +1,23 @@
+/*
+ * Copyright (c) 2024 Alexandros Lekkas. All rights reserved.
+ *
+ * This work is a part of the Computer Science Internal Assessment for the International Baccalaureate program by
+ * Alexandros Lekkas. Unauthorized reproduction, distribution, or use of this material is prohibited.
+ */
+
 package view;
+
+import model.Authentication;
+import model.Company;
+import model.CompanyList;
+import model.User;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
 
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -12,42 +25,60 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
 import java.io.File;
 
+import java.util.logging.Logger;
+
 /**
- * Dashboard interface.
+ * The Dashboard class represents the main dashboard for the application.
  */
 public class Dashboard extends javax.swing.JFrame {
 
-    model.User user; // Current user.
-    model.CompanyList companies; // Company list of the authenticated user.
-    model.Company company; // Company selected, used for lambda expressions.
+    // Logging.
+    private static final Logger logger = Logger.getLogger(LoginSignup.class.getName());
+
+    // Currently authenticated user.
+    User user;
+
+    // Company list of the authenticated User.
+    CompanyList companies;
+
+    // Current company selected, used for lambda expressions.
+    Company company;
 
     /**
-     * Creates new form Dashboard.
+     * Initializes the Dashboard object.
      *
-     * @param authentication The authentication object used to authenticate the
-     * user.
+     * @param authentication The Authentication object used for user authentication.
+     *                       The authentication object should contain the user object and the company list.
      */
-    public Dashboard(model.Authentication authentication) {
+    public Dashboard(Authentication authentication) {
 
-        user = authentication.getUser(); // Get the authenticated user.
-        companies = user.getCompanyList(); // Get the company list of the authenticated user.
+        user = authentication.getUser();
+        companies = user.getCompanyList();
 
         // Attempt to set the preferred look and feel.
         try {
 
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
 
-        } catch (UnsupportedLookAndFeelException error) { // Catch a look and feel error.
+        } catch (UnsupportedLookAndFeelException unsupportedLookAndFeelException) { // Catch a look and feel error.
 
-            JOptionPane.showMessageDialog(null, "Visual settings not loaded properly!", "Error", JOptionPane.ERROR_MESSAGE);
+            // Output error message.
+            logger.severe(unsupportedLookAndFeelException.getMessage());
+            JOptionPane.showMessageDialog(
+
+                    null,
+                    "Unsupported look and feel.",
+                    "Look & Feel Error",
+                    JOptionPane.ERROR_MESSAGE
+
+            );
 
         }
 
-        java.awt.EventQueue.invokeLater(() -> {
-            initComponents();
-        }); // Initialise the co on a new thread.
+        java.awt.EventQueue.invokeLater(this::initComponents);
 
     }
 
@@ -62,7 +93,8 @@ public class Dashboard extends javax.swing.JFrame {
 
         companyFileChooser = new javax.swing.JFileChooser();
         titlePanel = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        titleLabel = new javax.swing.JLabel();
+        informationButton = new javax.swing.JButton();
         dashboardPanel = new javax.swing.JPanel();
         companyScrollPane = new javax.swing.JScrollPane();
         addCompanyButton = new javax.swing.JButton();
@@ -81,24 +113,41 @@ public class Dashboard extends javax.swing.JFrame {
         titlePanel.setBackground(new java.awt.Color(0, 51, 102));
         titlePanel.setPreferredSize(new java.awt.Dimension(281, 75));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Dashboard");
+        titleLabel.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        titleLabel.setForeground(new java.awt.Color(255, 255, 255));
+        titleLabel.setText("Dashboard");
+
+        informationButton.setBackground(new java.awt.Color(255, 255, 255));
+        informationButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        informationButton.setForeground(new java.awt.Color(0, 51, 153));
+        informationButton.setText("i");
+        informationButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                informationButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout titlePanelLayout = new javax.swing.GroupLayout(titlePanel);
         titlePanel.setLayout(titlePanelLayout);
         titlePanelLayout.setHorizontalGroup(
             titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, titlePanelLayout.createSequentialGroup()
-                .addContainerGap(100, Short.MAX_VALUE)
-                .addComponent(jLabel3)
+                .addContainerGap()
+                .addComponent(informationButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(titleLabel)
                 .addGap(98, 98, 98))
         );
         titlePanelLayout.setVerticalGroup(
             titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(titlePanelLayout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addComponent(jLabel3)
+                .addGroup(titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(titlePanelLayout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(titleLabel))
+                    .addGroup(titlePanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(informationButton)))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -176,17 +225,30 @@ public class Dashboard extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /** Removes a company */
+    /**
+     * Displays a confirmation message to the user when the remove company button is clicked.
+     *
+     * @param evt The action event.
+     */
     private void removeCompanyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeCompanyButtonActionPerformed
-        
-        JOptionPane.showConfirmDialog(null, "Open a company through the dashboard first to delete.");
+
+        // Output an information message.
+        JOptionPane.showMessageDialog(
+
+                null,
+                "This interface is used for adding and opening companies.\n" +
+                        "To remove a company click on it (open its dashboard) and click on the Delete button.",
+                "Information",
+                JOptionPane.INFORMATION_MESSAGE
+
+        );
         
     }//GEN-LAST:event_removeCompanyButtonActionPerformed
 
     /**
-     * Add company button is pressed.
+     * Performs an action when the add company button is clicked.
      *
-     * @param evt
+     * @param evt The action event.
      */
     private void addCompanyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCompanyButtonActionPerformed
 
@@ -215,26 +277,38 @@ public class Dashboard extends javax.swing.JFrame {
 
             }
 
-        } else if (result == JFileChooser.CANCEL_OPTION) {
-
-            // The user canceled the operation.
         }
-        
+
+
     }//GEN-LAST:event_addCompanyButtonActionPerformed
 
     /**
-     * When the component is shown update things on the screen.
-     * 
-     * @param evt 
+     * This method is called when the dashboardPanel is shown.
+     *
+     * @param evt The ComponentEvent that triggered this method.
      */
     private void dashboardPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_dashboardPanelComponentShown
        
        
     }//GEN-LAST:event_dashboardPanelComponentShown
 
+    private void informationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_informationButtonActionPerformed
+
+        // Output an information message.
+        JOptionPane.showMessageDialog(
+
+            null,
+            "This interface is for logging in or signing up.",
+            "Information",
+            JOptionPane.INFORMATION_MESSAGE
+
+        );
+
+    }//GEN-LAST:event_informationButtonActionPerformed
+
     /**
-     * Create the company buttons for the dashboard JScrollPane.
-     * 
+     * Creates buttons for each company in the linked list and adds them to a panel.
+     * Sets the panel as the view for the JScrollPane.
      */
     public void createCompanyButtons() {
         
@@ -262,9 +336,9 @@ public class Dashboard extends javax.swing.JFrame {
     }
 
     /**
-     * Creates a button for a company.
+     * Creates a JButton for the company.
      *
-     * @return The JButton representing the company.
+     * @return The JButton for the company.
      */
     private JButton createCompanyButton() {
 
@@ -292,8 +366,9 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JFileChooser companyFileChooser;
     private javax.swing.JScrollPane companyScrollPane;
     private javax.swing.JPanel dashboardPanel;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JButton informationButton;
     private javax.swing.JButton removeCompanyButton;
+    private javax.swing.JLabel titleLabel;
     private javax.swing.JPanel titlePanel;
     // End of variables declaration//GEN-END:variables
 

@@ -73,6 +73,7 @@ public class Merger extends javax.swing.JFrame {
         submitMergeButton = new javax.swing.JButton();
         titlePanel = new javax.swing.JPanel();
         titleLabel = new javax.swing.JLabel();
+        informationButton = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
         mainButtonPanel = new javax.swing.JPanel();
         mergeButton = new javax.swing.JButton();
@@ -225,21 +226,31 @@ public class Merger extends javax.swing.JFrame {
         titleLabel.setForeground(new java.awt.Color(255, 255, 255));
         titleLabel.setText("Merger");
 
+        informationButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        informationButton.setForeground(new java.awt.Color(0, 51, 153));
+        informationButton.setText("i");
+
         javax.swing.GroupLayout titlePanelLayout = new javax.swing.GroupLayout(titlePanel);
         titlePanel.setLayout(titlePanelLayout);
         titlePanelLayout.setHorizontalGroup(
             titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, titlePanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(informationButton)
+                .addGap(135, 135, 135)
                 .addComponent(titleLabel)
-                .addGap(173, 173, 173))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         titlePanelLayout.setVerticalGroup(
             titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(titlePanelLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
+                .addContainerGap()
+                .addComponent(informationButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, titlePanelLayout.createSequentialGroup()
+                .addContainerGap(11, Short.MAX_VALUE)
                 .addComponent(titleLabel)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addGap(9, 9, 9))
         );
 
         mergeButton.setText("Perform Merge");
@@ -797,6 +808,7 @@ public class Merger extends javax.swing.JFrame {
     private javax.swing.JTextField companyNameField;
     private javax.swing.JLabel companyNameLabel;
     private javax.swing.JPanel companySelectionPanel;
+    private javax.swing.JButton informationButton;
     private javax.swing.JPanel mainButtonPanel;
     private javax.swing.JPanel mainDialogPanel;
     private javax.swing.JPanel mainPanel;

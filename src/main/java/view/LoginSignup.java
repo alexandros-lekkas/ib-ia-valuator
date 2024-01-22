@@ -298,14 +298,14 @@ public final class LoginSignup extends javax.swing.JFrame {
             
             user = authentication.logIn(usernameTextField.getText(), passwordTextField.getText());
 
-        } else { // If the login boolean is false, meaning that we are trying to signup, then try to signup the user.
+        } else { // If the login boolean is false, meaning that we are trying to signup, then try to register the user.
 
             user = authentication.signUp(usernameTextField.getText(), passwordTextField.getText());
 
         }
         
-        // Check if a user object was recieved.
-        if (user != null) { // If it is not null, it means that either the login or the signup was sucessful.
+        // Check if a user object was received.
+        if (user != null) { // If it is not null, it means that either the login or the signup was successful.
             
             dispose(); // Close the current frame.
             new view.Dashboard(authentication).setVisible(true); // Opens a new dashboard interface.

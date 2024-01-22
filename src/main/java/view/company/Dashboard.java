@@ -66,6 +66,7 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         titlePanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        informationButton = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
         dashboardPanel = new javax.swing.JPanel();
         detailsPanel = new javax.swing.JPanel();
@@ -160,12 +161,19 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Company Dashboard");
 
+        informationButton.setBackground(new java.awt.Color(255, 255, 255));
+        informationButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        informationButton.setForeground(new java.awt.Color(0, 51, 153));
+        informationButton.setText("i");
+
         javax.swing.GroupLayout titlePanelLayout = new javax.swing.GroupLayout(titlePanel);
         titlePanel.setLayout(titlePanelLayout);
         titlePanelLayout.setHorizontalGroup(
             titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, titlePanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(informationButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addGap(69, 69, 69))
         );
@@ -175,6 +183,10 @@ public class Dashboard extends javax.swing.JFrame {
                 .addContainerGap(11, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addGap(9, 9, 9))
+            .addGroup(titlePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(informationButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         detailsLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -490,6 +502,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel detailsLabel;
     private javax.swing.JPanel detailsPanel;
     private javax.swing.JDialog estimationDialog;
+    private javax.swing.JButton informationButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;

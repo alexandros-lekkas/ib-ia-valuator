@@ -16,10 +16,10 @@ import java.util.logging.Logger;
  * The Valuator class is the entry point of the application. It is responsible for creating the necessary folders and
  * files for storing application data and launching the LoginSignup interface.
  */
-public class Valuator {
+public class Product {
 
     // Logging.
-    private static final Logger logger = Logger.getLogger(Valuator.class.getName());
+    private static final Logger logger = Logger.getLogger(Product.class.getName());
 
     /**
      * The main method is the entry point of the Valuator application. It is responsible for creating the necessary

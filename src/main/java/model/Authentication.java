@@ -231,7 +231,7 @@ public class Authentication {
         } catch (IOException ioException) {
 
             // Output error message.
-            System.out.println(ioException.getMessage());
+            logger.severe(ioException.getMessage());
             JOptionPane.showMessageDialog(
 
                     null,

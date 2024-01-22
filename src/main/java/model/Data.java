@@ -1,15 +1,25 @@
+/*
+ * Copyright (c) 2024 Alexandros Lekkas. All rights reserved.
+ *
+ * This work is a part of the Computer Science Internal Assessment for the International Baccalaureate program by
+ * Alexandros Lekkas. Unauthorized reproduction, distribution, or use of this material is prohibited.
+ */
+
 package model;
 
 /**
- * Data class to hold data (which includes time frame).
- *
- * @author Alexandros Lekkas
+ * Data represents a single piece of recorded data, including the year, month, and value.
  */
 public class Data {
 
-    private final int year; // Year of the recorded data.
-    private final int month; // Month of the recorded data.
-    private final int value; // Value of the recorded data.
+    // Year of the recorded piece of data.
+    private final int year;
+
+    // Month of the recorded piece of data.
+    private final int month;
+
+    // Value of the recorded piece of data.
+    private final int value;
 
     /**
      * Constructor for creating a data object used to represent a single piece
@@ -32,44 +42,28 @@ public class Data {
      *
      * @return The recorded year of the data.
      */
-    public int getYear() {
-
-        return this.year;
-
-    }
+    public int getYear() { return this.year; }
 
     /**
      * Gets the current month of the data.
      *
      * @return The current month of the data.
      */
-    public int getMonth() {
-
-        return this.month;
-
-    }
+    public int getMonth() { return this.month; }
 
     /**
      * Return the value of the current data point.
      *
      * @return The current value of the data.
      */
-    public int getValue() {
-
-        return this.value;
-
-    }
+    public int getValue() { return this.value; }
     
     /**
-     * Create a string to represent the data in the data object.
+     * Create a String to represent the data in the data object.
      * 
-     * @return The data object as a string.
+     * @return The data object as a String.
      */
     @Override
-    public String toString() {
-        
-        return "Value: " + getValue() + " - Month: " + getMonth() + " - Year: " + getYear(); 
-        
-    }
+    public String toString() { return "Value: " + getValue() + " - Month: " + getMonth() + " - Year: " + getYear(); }
 
 }
