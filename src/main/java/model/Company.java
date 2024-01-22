@@ -172,46 +172,62 @@ public class Company {
      */
     public void readStatistics() {
 
+        // Reset the existing statistics.
         revenues.clear();
         costs.clear();
 
-        boolean found;
+        // Create new FileReader and BufferedReader.
+        FileReader fileReader = null;
         try {
 
-            FileReader fileReader = new FileReader(this.filePath);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            fileReader = new FileReader(this.filePath);
 
-            // Find where the statistics data begins in the file.
-            found = false;
-            while (!found) { // Loop through the file until statistics data is found...
+        } catch (FileNotFoundException fileNotFoundException) {
 
-                String[] currentLine = bufferedReader.readLine().split(",");
+            throw new RuntimeException(fileNotFoundException);
 
-                try {
+        }
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-                    // Check if currentLine[0] is equal to "STATISTICS".
-                    if (currentLine[0].equals("STATISTICS")) { // If beginning of statistics...
+        boolean found;
 
-                        found = true;
+        // Find where the statistics begin in the file.
+        found = false;
+        while (!found) {
 
-                    }
+            try {
 
-                } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
+                String line = bufferedReader.readLine();
 
-                    System.out.println(arrayIndexOutOfBoundsException.getMessage());
+                if (line != null) {
+
+                    String[] currentLine = line.split(",");
+
+                    // Check if we find the statistics part.
+                    if (currentLine[0].equals("STATISTICS")) { found = true; }
 
                 }
 
+            } catch (IOException ioException) {
+
+                System.out.println(ioException.getMessage());
+
             }
 
-            // Find statistics and create Statistic objects.
-            found = false;
-            while (!found) {
 
-                String[] currentLine = bufferedReader.readLine().split(","); // Save current line to an array.
-                System.out.println(Arrays.toString(currentLine));
+        }
 
-                try {
+        // Find where the statistics begin in the file.
+        found = false;
+        while (!found) {
+
+            try {
+
+                String line = bufferedReader.readLine();
+
+                if (line != null) {
+
+                    String[] currentLine = line.split(",");
 
                     // Check if the currentLine[0] is equal to "END OF STATISTICS".
                     if (currentLine[0].equals("END OF STATISTICS")) { // If end of statistics...
@@ -233,43 +249,14 @@ public class Company {
 
                     }
 
-                } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
-
-                    System.out.println(arrayIndexOutOfBoundsException.getMessage());
-
                 }
+
+            } catch (IOException ioException) {
+
+                System.out.println(ioException.getMessage());
 
             }
 
-        } catch (FileNotFoundException fileNotFoundException) {
-
-            // Output an error message.
-            System.out.println(fileNotFoundException.getMessage());
-            JOptionPane.showMessageDialog(
-
-                    null,
-                    "File not found.",
-                    "IO Error",
-                    JOptionPane.ERROR_MESSAGE
-
-            );
-
-        } catch (IOException ioException) {
-
-            // Output an error message.
-            System.out.println(ioException.getMessage());
-            JOptionPane.showMessageDialog(
-
-                    null,
-                    "File not found.",
-                    "IO Error",
-                    JOptionPane.ERROR_MESSAGE
-
-            );
-
-        } catch (NullPointerException nullPointerException) {
-
-            System.out.println(nullPointerException.getMessage());
 
         }
 
