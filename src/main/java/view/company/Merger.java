@@ -668,13 +668,15 @@ public class Merger extends javax.swing.JFrame {
      * @param statistics2 Second ArrayList.
      * @return The new ArrayList created from combining them.
      */
-    public ArrayList<Statistic> combineStatistics(ArrayList<model.Statistic> statistics1, ArrayList<model.Statistic> statistics2) {
+    public ArrayList<Statistic> combineStatistics(ArrayList<Statistic> statistics1, ArrayList<Statistic> statistics2) {
+
+        logger.info("Combining statistics. L1: " + statistics1.size() + " | L2: " + statistics1.size());
         
         ArrayList<Statistic> combinedStatistics = new ArrayList<>(); // Create the new ArrayList to save the merged details.
         
         // Duplicate lists to use for re-adding.
-        ArrayList<Statistic> statistics1copy = new ArrayList<>(statistics1);
-        ArrayList<Statistic> statistics2copy = new ArrayList<>(statistics2);
+        ArrayList<Statistic> statistics1Copy = new ArrayList<>(statistics1);
+        ArrayList<Statistic> statistics2Copy = new ArrayList<>(statistics2);
 
         // Loop through the two statistics finding similar ones and performing corresponding logic.
         for (Statistic statistic1 : statistics1) {
@@ -686,12 +688,12 @@ public class Merger extends javax.swing.JFrame {
                 if (statistic1.getName().equalsIgnoreCase(statistic2.getName())) {
                     
                     // Remove statistics from their ArrayLists.
-                    statistics1copy.remove(statistic1);
-                    statistics2copy.remove(statistic2);
+                    statistics1Copy.remove(statistic1);
+                    statistics2Copy.remove(statistic2);
                     
                     // Combine data points from stat1 and stat2.
                     ArrayList<model.Data> combinedData = combineData(statistic1.getData(), statistic2.getData());
-                    combinedStatistics.add(new model.Statistic(statistic1.getName(), combinedData));
+                    combinedStatistics.add(new Statistic(statistic1.getName(), combinedData));
                     
                 }
                 
@@ -700,8 +702,8 @@ public class Merger extends javax.swing.JFrame {
         }
         
         // Add the remaining uncombined statistics from the copies
-        combinedStatistics.addAll(statistics1copy);
-        combinedStatistics.addAll(statistics2copy);
+        combinedStatistics.addAll(statistics1Copy);
+        combinedStatistics.addAll(statistics2Copy);
         
         System.out.println(combinedStatistics);
 
