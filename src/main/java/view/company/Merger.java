@@ -670,7 +670,9 @@ public class Merger extends javax.swing.JFrame {
      */
     public ArrayList<Statistic> combineStatistics(ArrayList<Statistic> statistics1, ArrayList<Statistic> statistics2) {
 
-        logger.info("Combining statistics. L1: " + statistics1.size() + " | L2: " + statistics1.size());
+        // TODO: Statistic combination.
+
+        logger.info("Combining statistics. | Statistics1 Size: " + statistics1.size() + " – Statistics2 Size: " + statistics1.size());
         
         ArrayList<Statistic> combinedStatistics = new ArrayList<>(); // Create the new ArrayList to save the merged details.
         
@@ -683,6 +685,8 @@ public class Merger extends javax.swing.JFrame {
             
             // Loop through specifically the second one, doesn't matter in which order things are.
             for (Statistic statistic2 : statistics2) {
+
+                logger.info("Comparing " + statistic1.getName() + " to " + statistic2.getName());
                     
                 // Check if statistics have the same name, made to uppercase to avoid character issues.
                 if (statistic1.getName().equalsIgnoreCase(statistic2.getName())) {
