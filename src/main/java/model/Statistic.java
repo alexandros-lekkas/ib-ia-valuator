@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 /**
@@ -31,7 +32,7 @@ public class Statistic {
     private String filePath = null;
 
     // ArrayList of Data.
-    private final ArrayList<Data> data;
+    private ArrayList<Data> data;
 
     /**
      * Constructs a Statistic object with the given name and file path.
@@ -68,11 +69,11 @@ public class Statistic {
     public String getName() { return name; }
 
     /**
-     * Reads data from a file and populates the data list of the statistic object. This method searches for the
-     * statistic in the file based on the name provided. It then reads the data associated with the statistic and saves
-     * it as Data objects in the data list.
+     * Reads data from a file and populates the Data list of the Statistic object.
      */
     public void readData() {
+
+        logger.info("Reading Data for Statistic " + this.name + ".");
 
         try {
 
@@ -84,31 +85,34 @@ public class Statistic {
             while (!found) { // Loop through the file and only stop when statistic is found.
 
                 String[] currentLine = bufferedReader.readLine().split(","); // Save current line to an array.
+                logger.info("Current line: " + Arrays.toString(currentLine) + ".");
 
                 try {
 
-                    if (currentLine[1].equalsIgnoreCase(name)) {
+                    if (currentLine.length > 1 && currentLine[1].equalsIgnoreCase(name)) {
 
                         String[] nextLine = bufferedReader.readLine().split(",");
 
                         int i = 3; // First year should be defined at index position 3.
-                        while (!currentLine[i].isEmpty()) { // Loop through to each year that is part of the statistic.
+                        while (i < currentLine.length && !currentLine[i].isEmpty()) { // Loop through to each year that is part of the statistic.
 
                             int year = Integer.parseInt(currentLine[i]); // Get the year that belongs to this year of data.
                             int j = 4; // The next index.
                             try {
                                 
-                                while (Integer.parseInt(currentLine[j]) <= 12) { // Loop through the years data from months creating data.
+                                while (j < currentLine.length && Integer.parseInt(currentLine[j]) <= 12) { // Loop through the years data from months creating data.
 
-                                    System.out.println(Integer.parseInt(nextLine[j]));
-                                    data.add(new Data(year, Integer.parseInt(currentLine[j]), Integer.parseInt(nextLine[j])));
-                                    System.out.println(toString());
+                                    int value = (int) Double.parseDouble(nextLine[j]);
+                                    data.add(new Data(year, Integer.parseInt(currentLine[j]), value));
+                                    logger.info(data.toString());
+
                                     j++;
 
                                 }
                                 
                             } catch (NumberFormatException numberFormatExceptions) {
 
+                                // Log warning message.
                                 logger.warning(
 
                                         "Number format issue. Skipping over value.\n"
@@ -164,6 +168,8 @@ public class Statistic {
             );
 
         }
+
+        logger.info(this.data.toString());
 
     }
 
@@ -234,6 +240,19 @@ public class Statistic {
 
             float extrapolatedValue = lastValue + (movingAverage * i);
             extrapolatedData.add(new Data(extrapolatedYear, extrapolatedMonth, (int) extrapolatedValue));
+
+        }
+
+        // Output message if Data was actually extrapolated.
+        logger.info("Data has " + this.data.toArray().length + " records.");
+        logger.info("Data has " + extrapolatedData.toArray().length + " records.");
+        if (!extrapolatedData.equals(this.data)) {
+
+            logger.info("Data extrapolated properly.");
+
+        } else {
+
+            logger.warning("Data not extrapolated properly.");
 
         }
 

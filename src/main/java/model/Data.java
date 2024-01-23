@@ -10,11 +10,18 @@ package model;
 /**
  * Data represents a single piece of recorded data, including the year, month, and value.
  *
- * @param year Year of the recorded piece of data.
- * @param month Month of the recorded piece of data.
- * @param value Value of the recorded piece of data.
+ * @implNote Not stored as a Record as there are certain operations needed.
  */
-public record Data(int year, int month, int value) {
+public class Data {
+
+    // Year of the recorded Data.
+    int year;
+
+    // Month of the recorded Data.
+    int month;
+
+    // Value of the recorded Data.
+    int value;
 
     /**
      * Represents a single piece of recorded data, including the year, month, and value.
@@ -23,31 +30,13 @@ public record Data(int year, int month, int value) {
      * @param month The month of the recorded data.
      * @param value The value of the recorded data.
      */
-    public Data { }
+    public Data(int year, int month, int value) {
 
-    /**
-     * Returns the year the data was recorded.
-     *
-     * @return The recorded year of the data.
-     */
-    @Override
-    public int year() { return this.year; }
+        this.year = year;
+        this.month = month;
+        this.value = value;
 
-    /**
-     * Gets the current month of the data.
-     *
-     * @return The current month of the data.
-     */
-    @Override
-    public int month() { return this.month; }
-
-    /**
-     * Return the value of the current data point.
-     *
-     * @return The current value of the data.
-     */
-    @Override
-    public int value() { return this.value; }
+    }
 
     /**
      * Create a String to represent the data in the data object.
@@ -56,5 +45,26 @@ public record Data(int year, int month, int value) {
      */
     @Override
     public String toString() { return "Value: " + value() + " - Month: " + month() + " - Year: " + year(); }
+
+    /**
+     * Returns the year the data was recorded.
+     *
+     * @return The recorded year of the data.
+     */
+    public int year() { return this.year; }
+
+    /**
+     * Gets the current month of the data.
+     *
+     * @return The current month of the data.
+     */
+    public int month() { return this.month; }
+
+    /**
+     * Return the value of the current data point.
+     *
+     * @return The current value of the data.
+     */
+    public int value() { return this.value; }
 
 }

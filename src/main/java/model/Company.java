@@ -7,39 +7,37 @@
 
 package model;
 
-import java.io.File;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import model.Statistic;
+
+import javax.swing.*;
+
+import java.io.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
-import javax.swing.JOptionPane;
-
 /**
- * Represents a company with its details and statistics.
+ * Represents a company with name, description, country, and financial statistics.
  */
 public class Company {
 
     // Logger.
     private static final Logger logger = Logger.getLogger(Company.class.getName());
 
-    // Next Company in the CompanyList linked list.
+    // Next Company in CompanyList.
     private Company next = null;
 
-    // File for the Company.
+    // Company File.
     private File file;
 
-    // The file path of the Company.
+    // File path to the Company.
     private final String filePath;
 
-    // The name of the Company file.
+    // Name of the Company file.
     private final String fileName;
 
-    // The name of the Company.
+    // Name of the Company.
     private String name;
 
     // Description of the Company.
@@ -48,17 +46,17 @@ public class Company {
     // Country of the Company.
     private String country;
 
-    // ArrayList of Statistic objects representing the revenue streams for the Company.
+    // ArrayList of Statistic, revenues.
     public ArrayList<Statistic> revenues;
 
-    // ArrayList of Statistic objects representing the costs for the Company.
+    // ArrayList of Statistic, costs.
     public ArrayList<Statistic> costs;
 
     /**
-     * Creates a new Company object by reading data from a file and initializing its fields.
+     * Creates a new Company object with the given file path and file name.
      *
-     * @param filePath The path to the file containing company details.
-     * @param fileName The name of the file containing company details.
+     * @param filePath The file path of the company file.
+     * @param fileName The file name of the company file.
      */
     public Company(String filePath, String fileName) {
 
@@ -66,54 +64,26 @@ public class Company {
 
         this.filePath = filePath;
         this.fileName = fileName;
-        this.revenues = new ArrayList<>(); // Initialize the revenues list.
-        this.costs = new ArrayList<>(); // Initialize the costs list.
+        this.revenues = new ArrayList<>();
+        this.costs = new ArrayList<>();
 
-        try (FileReader fileReader = new FileReader(filePath);
-             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+        readCompanyDetails();
 
-            logger.info("Created new FileReader and BufferedReader.");
+    }
+
+    /**
+     * Reads the company details from a file and updates the corresponding fields of the Company object.
+     */
+    private void readCompanyDetails() {
+
+        try (BufferedReader bufferedReader =  new BufferedReader(new FileReader(filePath))) {
 
             String line;
-            while ((line = bufferedReader.readLine()) != null) {
+            while ((line = bufferedReader.readLine()) != null) { processLine(line); }
 
-                String[] currentLine = line.split(",");
-                logger.info(Arrays.toString(currentLine));
-
-                // Use a switch statement to store the specific data of the line being currently read.
-                switch (currentLine[0]) {
-
-                    case "Name":
-
-                        this.name = currentLine[1];
-                        break;
-
-                    case "Description":
-
-                        this.description = currentLine[1];
-                        break;
-
-                    case "Country":
-
-                        this.country = currentLine[1];
-                        break;
-
-                    // If the END OF DETAILS is found stop the loop.
-                    case "END OF DETAILS":
-
-                        return;
-
-                    default:
-
-                        break;
-
-                }
-
-            }
-            
         } catch (IOException ioException) {
 
-            // Send error message.
+            // Output error message.
             logger.severe(ioException.getMessage());
             JOptionPane.showMessageDialog(
 
@@ -129,111 +99,203 @@ public class Company {
     }
 
     /**
-     * Reads the statistics from a file and populates the revenues and costs ArrayLists with Statistic objects.
+     * Processes a line of input and updates the corresponding fields of the Company object.
+     *
+     * @param line The line of input to be processed.
+     */
+    private void processLine(String line) {
+
+        String[] currentLine = line.split(",");
+        logger.info(Arrays.toString(currentLine));
+
+        switch (currentLine[0]) {
+
+            case "Name":
+                this.name = currentLine[1];
+                break;
+
+            case "Description":
+                this.description = currentLine[1];
+                break;
+
+            case "Country":
+                this.country = currentLine[1];
+                break;
+
+            case "END OF DETAILS":
+                return;
+
+            default:
+                break;
+
+        }
+
+    }
+
+    /**
+     * Clears the revenues and costs lists and reads the statistic data from a file.
      */
     public void readStatistics() {
 
-        // Reset the existing statistics.
         revenues.clear();
         costs.clear();
+        readStatisticData();
 
-        // Create new FileReader and BufferedReader.
-        FileReader fileReader = null;
-        BufferedReader bufferedReader = null;
+    }
 
+    /**
+     * Reads the statistic data from a file.
+     */
+    private void readStatisticData() {
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(this.filePath))) {
+
+            processStatistics(bufferedReader);
+
+        } catch (IOException ioException) {
+
+            // Output error message.
+            System.out.println(ioException.getMessage());
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Error with IO. File potentially not found.",
+                    "IO Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+
+        }
+
+    }
+
+    /**
+     * Processes the statistics from the input file.
+     *
+     * @param bufferedReader The BufferedReader used to read the input file.
+     */
+    private void processStatistics(BufferedReader bufferedReader) {
+
+        boolean found = locateStatistics(bufferedReader);
+
+        if (!found) {
+
+            logger.warning("Null line, might cause issues.");
+            return;
+
+        }
+
+        found = processStatisticLines(bufferedReader);
+
+        if (!found) {
+
+            logger.warning("Could not find end of statistics.");
+
+        }
+
+    }
+
+    /**
+     * Locates the statistics line in the input file.
+     *
+     * @param bufferedReader The BufferedReader used to read the input file.
+     * @return true if the statistics line is found, false otherwise.
+     */
+    private boolean locateStatistics(BufferedReader bufferedReader) {
+
+        boolean found = false;
         try {
 
-            fileReader = new FileReader(this.filePath);
-            bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while (!found && (line = bufferedReader.readLine()) != null) {
 
-            boolean found;
+                String[] currentLine = line.split(",");
+                if (currentLine[0].equals("STATISTICS")) {
 
-            // Find where the statistics begin in the file.
-            found = false;
-            while (!found) {
-
-                try {
-
-                    String line = bufferedReader.readLine();
-
-                    if (line != null) {
-
-                        String[] currentLine = line.split(",");
-
-                        // Check if we find the statistics part.
-                        if (currentLine[0].equals("STATISTICS")) { found = true; }
-
-                    } else {
-
-                        logger.warning("Null line, might cause issues.");
-
-                    }
-
-                } catch (IOException ioException) {
-
-                    System.out.println(ioException.getMessage());
-
-                }
-
-
-            }
-
-            // Find where the statistics begin in the file.
-            found = false;
-            while (!found) {
-
-                try {
-
-                    String line = bufferedReader.readLine();
-
-                    if (line != null) {
-
-                        String[] currentLine = line.split(",");
-
-                        // Check if the currentLine[0] is equal to "END OF STATISTICS".
-                        if (currentLine[0].equals("END OF STATISTICS")) { // If end of statistics...
-
-                            found = true;
-
-                        } else { // If not end of statistics...
-
-                            // Check if the statistic is a revenue or cost.
-                            if (currentLine[0].equalsIgnoreCase("REVENUE")) {
-
-                                revenues.add(new Statistic(currentLine[1], this.filePath));
-
-                            } else if (currentLine[0].equalsIgnoreCase("COST")) {
-
-                                costs.add(new Statistic(currentLine[1], this.filePath));
-
-                            }
-
-                        }
-
-                    }
-
-                } catch (IOException ioException) {
-
-                    System.out.println(ioException.getMessage());
+                    found = true;
 
                 }
 
             }
 
-        } catch (FileNotFoundException fileNotFoundException) {
+        } catch (IOException ioException) {
 
-            // Output an error message.
-            System.out.println(fileNotFoundException.getMessage());
+            // Output error message.
+            logger.severe(ioException.getMessage());
             JOptionPane.showMessageDialog(
 
                     null,
-                    "Company file not found.",
+                    "Exception with input.",
                     "IO Error",
                     JOptionPane.ERROR_MESSAGE
 
             );
 
-            return;
+        }
+        return found;
+    }
+
+    /**
+     * Processes the statistic lines from the input file.
+     *
+     * @param bufferedReader The BufferedReader used to read the input file.
+     * @return True if the line "END OF STATISTICS" is found, false otherwise.
+     */
+    private boolean processStatisticLines(BufferedReader bufferedReader) {
+
+        boolean found = false;
+        try {
+            String line;
+            while (!found && (line = bufferedReader.readLine()) != null) {
+                found = processStatisticLine(line);
+            }
+        } catch (IOException ioException) {
+
+            // Output error message.
+            logger.severe(ioException.getMessage());
+            JOptionPane.showMessageDialog(
+
+                    null,
+                    "Exception with input.",
+                    "IO Error",
+                    JOptionPane.ERROR_MESSAGE
+
+            );
+
+        }
+        return found;
+
+    }
+
+    /**
+     * Processes a statistic line from the input and updates the corresponding fields of the Company object.
+     *
+     * @param line The line of input to be processed.
+     * @return True if the line is "END OF STATISTICS", false otherwise.
+     */
+    private boolean processStatisticLine(String line) {
+
+        String[] currentLine = line.split(",");
+        if (currentLine[0].equals("END OF STATISTICS")) {
+            return true;
+        }
+        addStatistic(currentLine);
+        return false;
+
+    }
+
+    /**
+     * Adds a statistic to the company's revenues or costs, based on the first element of the given currentLine array.
+     *
+     * @param currentLine The current line of input to be processed.
+     */
+    private void addStatistic(String[] currentLine) {
+
+        if (currentLine[0].equalsIgnoreCase("REVENUE")) {
+
+            revenues.add(new Statistic(currentLine[1], this.filePath));
+
+        } else if (currentLine[0].equalsIgnoreCase("COST")) {
+
+            costs.add(new Statistic(currentLine[1], this.filePath));
 
         }
 
@@ -247,6 +309,8 @@ public class Company {
      * @return The valuation of the company.
      */
     public int calculateFinalValue(int monthsToExtrapolate) {
+
+        readStatistics();
 
         // Read and extrapolate data once.
         ArrayList<Data> allRevenueData = extrapolateAllData(revenues, monthsToExtrapolate);

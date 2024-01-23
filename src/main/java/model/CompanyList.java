@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
 /**
  * Represents a linked list of companies.
  */
-public final class CompanyList {
+public class CompanyList {
 
     // File path of the User's file.
     private final String filePath;
