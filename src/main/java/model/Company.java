@@ -7,14 +7,14 @@
 
 package model;
 
-import model.Statistic;
-
 import javax.swing.*;
 
 import java.io.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.logging.Logger;
 
 /**
@@ -310,14 +310,34 @@ public class Company {
      */
     public int calculateFinalValue(int monthsToExtrapolate) {
 
-        readStatistics();
+        readStatistics(); // Re-read Statistics in-case they have not been read before.
+
+        int mostRecentYear = getMostRecentYear();
+
+        ArrayList<Statistic> newRevenues = new ArrayList<>();
+        ArrayList<Statistic> newCosts = new ArrayList<>();
+        for (Statistic statistic : revenues) {
+
+            if (statistic.getLatestCompleteYear() == mostRecentYear) {
+
+                newRevenues.add(statistic);
+
+            }
+
+        }
+        for (Statistic statistic : costs) {
+
+            if (statistic.getLatestCompleteYear() == mostRecentYear) {
+
+                newCosts.add(statistic);
+
+            }
+
+        }
 
         // Read and extrapolate data once.
-        ArrayList<Data> allRevenueData = extrapolateAllData(revenues, monthsToExtrapolate);
-        ArrayList<Data> allCostData = extrapolateAllData(costs, monthsToExtrapolate);
-
-        // Find the most recent complete year
-        int mostRecentYear = getAllDataMostRecentYear(allRevenueData, monthsToExtrapolate);
+        ArrayList<Data> allRevenueData = extrapolateAllData(newRevenues, monthsToExtrapolate);
+        ArrayList<Data> allCostData = extrapolateAllData(newCosts, monthsToExtrapolate);
 
         // Calculate the valuation only for the most recent complete year
         double revenueSum = sumDataForYear(allRevenueData, mostRecentYear);
@@ -332,53 +352,40 @@ public class Company {
     }
 
     /**
-     * Calculates the most recent year in the given list of data with optional extrapolation for additional months.
+     * Retrieves the most recent year from the revenues and costs statistics.
      *
-     * @param allData The list of Data objects containing the recorded data.
-     * @param monthsToExtrapolate The number of months to extrapolate the data for.
-     *
-     * @return The most recent year in the list, considering the months to extrapolate.
+     * @return The most recent year as an integer.
      */
-    private int getAllDataMostRecentYear(ArrayList<Data> allData, int monthsToExtrapolate) {
+    private int getMostRecentYear() {
 
-        Data lastData = allData.get(allData.size() - 1);
+        logger.info("Getting most recent year.");
 
-        int mostRecentYear = lastData.year();
+        ArrayList<Integer> revenuesLatestCompleteYears = new ArrayList<>();
+        ArrayList<Integer> costsLatestCompleteYears = new ArrayList<>();
 
-        mostRecentYear += monthsToExtrapolate / 12;
+        // Loop through the Statistic ArrayLists for revenues and costs and get latest complete years.
+        int latestCompleteYear;
+        for (Statistic statistic : revenues) {
 
-        // If extrapolated months exceeds one or more years, account for the remaining months
-        // by increasing the mostRecentYear by 1
-        if (monthsToExtrapolate % 12 > 0) {
-            mostRecentYear++;
+            latestCompleteYear = statistic.getLatestCompleteYear();
+            logger.info(statistic.getName() + " " + latestCompleteYear);
+
+            revenuesLatestCompleteYears.add(latestCompleteYear);
+
         }
+        for (Statistic statistic : costs) {
 
-        return mostRecentYear;
+            latestCompleteYear = statistic.getLatestCompleteYear();
+            logger.info(statistic.getName() + " " + latestCompleteYear);
 
-    }
-
-    /**
-     * Checks if a year is complete based on the count of data points for each month.
-     * A year is considered complete if there is at least one data point for each month.
-     *
-     * @param monthCount An array of counts for each month. The index represents the month, and the value represents the count of data points for that month.
-     *                   The array should have a length of 12.
-     *
-     * @return True if the year is complete, false otherwise.
-     */
-    private boolean isYearComplete(int[] monthCount) {
-
-        for (int count : monthCount) {
-
-            if (count == 0) {
-
-                return false; // Year is incomplete if any month has a count of 0.
-
-            }
+            costsLatestCompleteYears.add(latestCompleteYear);
 
         }
 
-        return true; // Year is complete if all months have data.
+        ArrayList<Integer> combinedRevenuesCostsLatestCompleteYears = new ArrayList<>();
+        combinedRevenuesCostsLatestCompleteYears.addAll(revenuesLatestCompleteYears);
+        combinedRevenuesCostsLatestCompleteYears.addAll(costsLatestCompleteYears);
+        return Collections.max(combinedRevenuesCostsLatestCompleteYears);
 
     }
 
@@ -415,9 +422,9 @@ public class Company {
         double sum = 0;
         for (Data data : dataList) {
 
-            if (data.year() == year) {
+            if (data.getYear() == year) {
 
-                sum += data.value();
+                sum += data.getValue();
 
             }
 

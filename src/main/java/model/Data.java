@@ -44,27 +44,27 @@ public class Data {
      * @return The data object as a String.
      */
     @Override
-    public String toString() { return "Value: " + value() + " - Month: " + month() + " - Year: " + year(); }
+    public String toString() { return "Value: " + getValue() + " - Month: " + getMonth() + " - Year: " + getYear(); }
 
     /**
      * Returns the year the data was recorded.
      *
      * @return The recorded year of the data.
      */
-    public int year() { return this.year; }
+    public int getYear() { return this.year; }
 
     /**
      * Gets the current month of the data.
      *
      * @return The current month of the data.
      */
-    public int month() { return this.month; }
+    public int getMonth() { return this.month; }
 
     /**
      * Return the value of the current data point.
      *
      * @return The current value of the data.
      */
-    public int value() { return this.value; }
+    public int getValue() { return this.value; }
 
 }
