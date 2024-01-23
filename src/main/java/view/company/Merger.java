@@ -1,27 +1,41 @@
 package view.company;
 
+import model.Company;
+import view.LoginSignup;
+
 import javax.swing.UnsupportedLookAndFeelException;
+
 import com.formdev.flatlaf.FlatIntelliJLaf;
+
 import java.awt.Desktop;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Logger;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 /**
- * The merging interface where company merging occurs.
- *
- * @author Alexandros Lekkas
+ * The Merger class represents a graphical user interface for merging two companies.
  */
 public class Merger extends javax.swing.JFrame {
-    
-    model.Company company1 = null;
-    model.Company company2 = null;
+
+    // Logging.
+    private static final Logger logger = Logger.getLogger(LoginSignup.class.getName());
+
+    // First Company object.
+    Company company1 = null;
+
+
+    // Second Company object.
+    Company company2 = null;
 
     /**
      * Creates new form Merging.
@@ -33,18 +47,22 @@ public class Merger extends javax.swing.JFrame {
 
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
 
-        } catch (UnsupportedLookAndFeelException error) { // Catch a look and feel error.
+        } catch (UnsupportedLookAndFeelException unsupportedLookAndFeelException) { // Catch a look and feel error.
 
-            JOptionPane.showMessageDialog(null, "Visual settings not loaded properly!", "Error", JOptionPane.ERROR_MESSAGE);
+            // Output error message.
+            logger.severe(unsupportedLookAndFeelException.getMessage());
+            JOptionPane.showMessageDialog(
+
+                    null,
+                    "Unsupported look and feel.",
+                    "Look & Feel Error",
+                    JOptionPane.ERROR_MESSAGE
+
+            );
 
         }
 
-        // Initialise the frame on a new thread.
-        java.awt.EventQueue.invokeLater(() -> {
-            
-            initComponents();
-            
-        });
+        java.awt.EventQueue.invokeLater(this::initComponents);
 
     }
 
@@ -762,6 +780,7 @@ public class Merger extends javax.swing.JFrame {
      * @return An array holding each line.
      */
     public String[] statisticToLines(String statisticType, model.Statistic statistic) {
+
         
         ArrayList<model.Data> data = statistic.getData(); // Get the data for that specific statistic.
         StringBuilder statisticLine1 = new StringBuilder(statisticType + "," + statistic.getName());

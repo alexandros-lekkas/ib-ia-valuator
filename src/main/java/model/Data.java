@@ -23,6 +23,12 @@ public class Data {
     // Value of the recorded Data.
     int value;
 
+
+    /**
+     * Represents a single piece of recorded data, including the year, month, and value.
+     */
+    public Data() { }
+
     /**
      * Represents a single piece of recorded data, including the year, month, and value.
      *
@@ -54,6 +60,13 @@ public class Data {
     public int getYear() { return this.year; }
 
     /**
+     * Sets the year of the recorded data.
+     *
+     * @param year The year of the recorded data.
+     */
+    public void setYear(int year) { this.year = year; }
+
+    /**
      * Gets the current month of the data.
      *
      * @return The current month of the data.
@@ -61,10 +74,24 @@ public class Data {
     public int getMonth() { return this.month; }
 
     /**
+     * Sets the month of the recorded data.
+     *
+     * @param month The month of the recorded data.
+     */
+    public void setMonth(int month) { this.month = month; }
+
+    /**
      * Return the value of the current data point.
      *
      * @return The current value of the data.
      */
     public int getValue() { return this.value; }
+
+    /**
+     * Sets the value of the data point to the provided value.
+     *
+     * @param value The new value for the data point.
+     */
+    public void setValue(int value) { this.value = value; }
 
 }

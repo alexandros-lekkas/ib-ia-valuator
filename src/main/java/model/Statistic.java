@@ -7,8 +7,11 @@
 
 package model;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.*;
 
+import java.awt.image.AreaAveragingScaleFilter;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -33,7 +36,7 @@ public class Statistic {
     private String filePath = null;
 
     // ArrayList of Data.
-    private ArrayList<Data> data;
+    private final ArrayList<Data> data;
 
     /**
      * Constructs a Statistic object with the given name and file path.
@@ -180,82 +183,104 @@ public class Statistic {
     }
 
     /**
-     * Extrapolates the data for a given number of months.
+     * Extrapolates the data for the specified number of years.
      *
-     * @param monthsToExtrapolate The number of months to extrapolate.
-     * @return An updated ArrayList with the extrapolated data.
+     * @param yearsToExtrapolate The number of years to extrapolate the data for.
+     *
+     * @return An ArrayList of Data objects containing the extrapolated data.
+     *
+     * @implNote Only used with full year as last year.
      */
-    public ArrayList<Data> extrapolateData(int monthsToExtrapolate) {
+    public ArrayList<Data> extrapolateData(int yearsToExtrapolate) {
 
-        readData();
+        readData(); // Read Data from Statistic.
 
-        if (getData().isEmpty()) { return null; }
+        // Get Data for the latest year of the Statistic.
+        ArrayList<Data> dataLastYear = new ArrayList<>(data.subList(data.size() - 12, data.size()));
+        if (yearsToExtrapolate == 0) {
 
-        ArrayList<Data> extrapolatedData = new ArrayList<>(data);
+            return dataLastYear;
 
-        // If no extrapolation is needed, return the current data.
-        if (monthsToExtrapolate == 0) { return extrapolatedData; }
+        }
 
-        Data lastDataPoint = extrapolatedData.get(extrapolatedData.size() - 1);
-        int mostRecentYear = lastDataPoint.getYear();
+        ArrayList<Data> extrapolatedData = new ArrayList<>(dataLastYear);
 
-        // Filter data for the most recent year.
-        ArrayList<Data> recentYearData = new ArrayList<>();
+        int lastYear = data.get(data.size() - 1).getYear(); // Get the latest year.
+        logger.info("Last year: " + lastYear);
 
-        for (Data extrapolatedDataPoint : extrapolatedData) {
+        // Loop through for every year.
+        for (int i = 0; i < yearsToExtrapolate; i++) {
 
-            if (extrapolatedDataPoint.getYear() == mostRecentYear) {
+            // Add 12 data points for every year.
+            for (int month = 0; month < 12; month++) {
 
-                recentYearData.add(extrapolatedDataPoint);
+
+                // Extrapolate a new data point, based on data from the last 12 months in the extrapolated data
+                Data newDataPoint = calculateLinearExtrapolationData(extrapolatedData, month, lastYear + i);
+
+                extrapolatedData.add(newDataPoint);
 
             }
 
-        }
-
-        // Calculate moving average.
-        float movingAverage = 0;
-        for (Data d : recentYearData) {
-
-            movingAverage += d.getValue();
+            lastYear++;
+            logger.info("Current year: " + lastYear);
 
         }
-        movingAverage /= recentYearData.size();
 
-        // Extrapolate data using moving average.
-        int lastMonth = lastDataPoint.getMonth();
-        float lastValue = (float) lastDataPoint.getValue();
-        for (int i = 1; i <= monthsToExtrapolate; i++) {
+        logger.info("Original Data Length: " + dataLastYear.size() + " | Extrapolated Data Length " + extrapolatedData.size());
+        logger.info("Original Data: " + dataLastYear);
+        logger.info("Extrapolated Data: " + extrapolatedData);
 
-            int extrapolatedMonth = lastMonth + i;
-            int extrapolatedYear = mostRecentYear;
+        return new ArrayList<>(extrapolatedData.subList(extrapolatedData.size() - 12, extrapolatedData.size()));
 
-            while (extrapolatedMonth > 12) {
+    }
 
-                extrapolatedMonth -= 12;
-                extrapolatedYear++;
+    /**
+     * Calculates the linear extrapolation data based on the given data from the previous year,
+     * the month, and the next year.
+     *
+     * @param dataLastYear The data from the previous year.
+     * @param month The month for which to calculate the extrapolation data.
+     * @param nextYear The next year for which to calculate the extrapolation data.\
+     *
+     * @return The extrapolation data as a Data object.
+     */
+    private static Data calculateLinearExtrapolationData(ArrayList<Data> dataLastYear, int month, int nextYear) {
 
+        int n = dataLastYear.size(); // Number of data points
+        double sumX = 0; // Sum of years (as x values)
+        double sumY = 0; // Sum of values (as y values)
+        double sumXY = 0; // Sum of x*y
+        double sumX2 = 0; // Sum of x squared
+
+        // Loop through data
+        for (Data dataPoint : dataLastYear) {
+            if (dataPoint.getMonth() == month + 1) {
+                int x = dataPoint.getYear();
+                double y = dataPoint.getValue();
+
+                sumX += x;
+                sumY += y;
+                sumXY += x * y;
+                sumX2 += x * x;
             }
-
-            float extrapolatedValue = lastValue + (movingAverage * i);
-            extrapolatedData.add(new Data(extrapolatedYear, extrapolatedMonth, (int) extrapolatedValue));
-
         }
 
-        // Output message if Data was actually extrapolated.
-        logger.info("Data has " + this.data.toArray().length + " records.");
-        logger.info("Data has " + extrapolatedData.toArray().length + " records.");
-        if (!extrapolatedData.equals(this.data)) {
+        // Linear regression equations
+        double exaggeratedFactor = 2.0;
+        double slope = ((n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX)) * exaggeratedFactor;
+        double intercept = (sumY - slope * sumX) / n;
 
-            logger.info("Data extrapolated properly.");
+        // Use the linear model to project the value into the future
+        double projectedValue = intercept + slope * nextYear;
 
-        } else {
+        // Create a new data point
+        Data newDataPoint = new Data();
+        newDataPoint.setMonth(month + 1);
+        newDataPoint.setYear(nextYear + 1);
+        newDataPoint.setValue((int) projectedValue);
 
-            logger.warning("Data not extrapolated properly.");
-
-        }
-
-        return extrapolatedData;
-
+        return newDataPoint;
     }
 
     /**
@@ -331,6 +356,6 @@ public class Statistic {
      *
      * @return The ArrayList of data objects.
      */
-    public ArrayList<model.Data> getData() { return data; }
+    public ArrayList<Data> getData() { return data; }
 
 }

@@ -11,7 +11,6 @@ import javax.swing.*;
 
 import java.io.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -258,10 +257,15 @@ public class Company {
 
         boolean found = false;
         try {
+
             String line;
+
             while (!found && (line = bufferedReader.readLine()) != null) {
+
                 found = processStatisticLine(line);
+
             }
+
         } catch (IOException ioException) {
 
             // Output error message.
@@ -289,10 +293,15 @@ public class Company {
     private boolean processStatisticLine(String line) {
 
         String[] currentLine = line.split(",");
+
         if (currentLine[0].equals("END OF STATISTICS")) {
+
             return true;
+
         }
+
         addStatistic(currentLine);
+
         return false;
 
     }
@@ -355,8 +364,8 @@ public class Company {
         ArrayList<Data> allCostData = extrapolateAllData(newCosts, monthsToExtrapolate);
 
         // Calculate the valuation only for the most recent complete year
-        double revenueSum = sumDataForYear(allRevenueData, mostRecentYear);
-        double costSum = sumDataForYear(allCostData, mostRecentYear);
+        double revenueSum = sumDataValues(allRevenueData);
+        double costSum = sumDataValues(allCostData);
 
         double netProfit = revenueSum - costSum;
         int profitMultiplier = 5; // Adjust this multiplier as necessary.
@@ -397,51 +406,64 @@ public class Company {
 
         }
 
+        // Add together the year ArrayLists.
         ArrayList<Integer> combinedRevenuesCostsLatestCompleteYears = new ArrayList<>();
         combinedRevenuesCostsLatestCompleteYears.addAll(revenuesLatestCompleteYears);
         combinedRevenuesCostsLatestCompleteYears.addAll(costsLatestCompleteYears);
-        return Collections.max(combinedRevenuesCostsLatestCompleteYears);
+
+        int mostRecentYear = Collections.max(combinedRevenuesCostsLatestCompleteYears);
+        logger.info("Most recent year: " + mostRecentYear);
+        return mostRecentYear;
 
     }
 
     /**
-     * Extrapolates the data from the given list of statistics for the specified number of months.
+     * Extrapolates all data from the given list of statistics for the specified number of years.
      *
-     * @param statistics The list of statistics to extrapolate the data from.
-     * @param monthsToExtrapolate The number of months to extrapolate the data for.
+     * @param statistics The list of statistics to extrapolate.
+     * @param yearsToExtrapolate The number of years to extrapolate the data for.
      *
-     * @return An ArrayList of Data objects containing the extrapolated data.
+     * @return The combined list of extrapolated data.
      */
-    private ArrayList<Data> extrapolateAllData(ArrayList<Statistic> statistics, int monthsToExtrapolate) {
+    private ArrayList<Data> extrapolateAllData(ArrayList<Statistic> statistics, int yearsToExtrapolate) {
 
-        ArrayList<Data> allData = new ArrayList<>();
+        logger.info("Extrapolating all data.");
+
+        ArrayList<Data> combinedData = new ArrayList<>();
+
         for (Statistic statistic : statistics) {
 
-            allData.addAll(statistic.extrapolateData(monthsToExtrapolate));
+            logger.info("Statistic: " + statistic.getData());
+            logger.info("Data before: " + statistic.getData());
+
+            ArrayList<Data> extrapolatedData = statistic.extrapolateData(yearsToExtrapolate);
+            combinedData.addAll(extrapolatedData);
+
+            logger.info("Data after: " + extrapolatedData);
+            logger.info("Combined data size: " + combinedData.size());
 
         }
 
-        return allData;
+        return combinedData;
 
     }
 
     /**
-     * Calculates the sum of data values for a specific year.
+     * Calculates the sum of the values of the Data objects in the given ArrayList for a specific year.
      *
-     * @param dataList An ArrayList of Data objects containing the data points.
-     * @param year The year for which to calculate the sum.
-     * @return The sum of data values for the specified year.
+     * @param dataList The ArrayList of Data objects.
+     *
+     * @return The sum of the values.
      */
-    private double sumDataForYear(ArrayList<Data> dataList, int year) {
+    private double sumDataValues(ArrayList<Data> dataList) {
+
+        logger.info("Summing up Data values.");
 
         double sum = 0;
+
         for (Data data : dataList) {
 
-            if (data.getYear() == year) {
-
-                sum += data.getValue();
-
-            }
+            sum += data.getValue();
 
         }
 
