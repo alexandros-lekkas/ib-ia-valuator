@@ -122,31 +122,60 @@ public class Statistic {
             }
 
         }
+
     }
 
+    /**
+     *
+     * Processes the data lines for a given statistic.
+     *
+     * @param currentLine The current line of data.
+     * @param nextLine The next line of data.
+     */
     private void processDataLines(String[] currentLine, String[] nextLine) {
+
         int i = 3;
 
         while (i < currentLine.length && !currentLine[i].isEmpty()) {
+
             int year = Integer.parseInt(currentLine[i]);
             int j = 4;
 
             processYearData(currentLine, nextLine, i, j, year);
             i += 14;
+
         }
+
     }
 
+    /**
+     * Processes the year data for a given statistic, adding the data to the internal data list.
+     *
+     * @param currentLine The current line of data.
+     * @param nextLine The next line of data.
+     * @param i The current index in the currentLine array.
+     * @param j The current index in the nextLine array.
+     * @param year The year of the data.
+     */
     private void processYearData(String[] currentLine, String[] nextLine, int i, int j, int year) {
+
         try {
+
             while (j < currentLine.length && Integer.parseInt(currentLine[j]) <= 12) {
+
                 int value = (int) Double.parseDouble(nextLine[j]);
                 data.add(new Data(year, Integer.parseInt(currentLine[j]), value));
                 logger.info(data.toString());
                 j++;
+
             }
+
         } catch (NumberFormatException exception) {
+
             logger.warning("Number format issue. Skipping over value.\n" + exception.getMessage());
+
         }
+
     }
 
     /**
@@ -175,14 +204,14 @@ public class Statistic {
         }
 
         Data lastDataPoint = extrapolatedData.get(extrapolatedData.size() - 1);
-        int mostRecentYear = lastDataPoint.year();
+        int mostRecentYear = lastDataPoint.getYear();
 
         // Filter data for the most recent year.
         ArrayList<Data> recentYearData = new ArrayList<>();
 
         for (Data extrapolatedDataPoint : extrapolatedData) {
 
-            if (extrapolatedDataPoint.year() == mostRecentYear) {
+            if (extrapolatedDataPoint.getYear() == mostRecentYear) {
 
                 recentYearData.add(extrapolatedDataPoint);
 
@@ -194,14 +223,14 @@ public class Statistic {
         float movingAverage = 0;
         for (Data d : recentYearData) {
 
-            movingAverage += d.value();
+            movingAverage += d.getValue();
 
         }
         movingAverage /= recentYearData.size();
 
         // Extrapolate data using moving average.
-        int lastMonth = lastDataPoint.month();
-        float lastValue = (float) lastDataPoint.value();
+        int lastMonth = lastDataPoint.getMonth();
+        float lastValue = (float) lastDataPoint.getValue();
         for (int i = 1; i <= monthsToExtrapolate; i++) {
 
             int extrapolatedMonth = lastMonth + i;
@@ -237,6 +266,39 @@ public class Statistic {
     }
 
     /**
+     * Returns the latest complete year for the data. A complete year is defined as having at least 12 data points. If
+     * the data does not have a complete year, -1 is returned.
+     *
+     * @return The latest complete year for the data, or -1 if it is incomplete.
+     */
+    public int getLatestCompleteYear() {
+
+        // Check if the ArrayList of Data is long enough for minimum one year.
+        if (data.size() >= 12) {
+
+            int latestDataYear = data.get(data.size() - 1).getYear();
+
+            // Check if the previous 11 data points belong to the same year (forming a whole year).
+            for (int i = data.size() - 2; i >= data.size() - 12; i--) {
+
+                //
+                if (data.get(i).getYear() != latestDataYear) {
+
+                    return -1;
+
+                }
+
+                return latestDataYear;
+
+            }
+
+        }
+
+        return -1;
+
+    }
+
+    /**
      * Outputs information about the statistic as a String.
      *
      * @return Statistic represented as a String.
@@ -249,7 +311,7 @@ public class Statistic {
         // Loop through the data in the statistic and output it.
         for (Data dataPoint : getData()) {
 
-            dataString.append(" ").append(dataPoint.value()).append(",");
+            dataString.append(" ").append(dataPoint.getValue()).append(",");
 
         }
 

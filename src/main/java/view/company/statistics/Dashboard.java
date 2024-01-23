@@ -90,9 +90,9 @@ public class Dashboard extends javax.swing.JFrame {
                 // Loop through the data of the statistic.
                 ArrayList<model.Data> statisticData = statistic.getData();
                 for(model.Data data : statisticData) {
-                    Month month = new Month(data.month(), data.year());
+                    Month month = new Month(data.getMonth(), data.getYear());
                     System.out.println(month.toString());
-                    series.add(month, data.value());
+                    series.add(month, data.getValue());
                 }
 
                 TimeSeriesCollection dataset = new TimeSeriesCollection();

@@ -715,13 +715,13 @@ public class Merger extends javax.swing.JFrame {
                 System.out.println(dataPoint2.toString());
                 
                 // If they have the same data of data then...
-                if (dataPoint1.year() == dataPoint2.year() && dataPoint1.month() == dataPoint2.month()) {
+                if (dataPoint1.getYear() == dataPoint2.getYear() && dataPoint1.getMonth() == dataPoint2.getMonth()) {
                     
                     // Remove the data values.
                     data1copy.remove(dataPoint1);
                     data2copy.remove(dataPoint2);
                     
-                    combinedData.add(new model.Data(dataPoint1.year(), dataPoint1.month(), (dataPoint1.value() + dataPoint2.value()))); // Add the combined data to the ArrayList of data.
+                    combinedData.add(new model.Data(dataPoint1.getYear(), dataPoint1.getMonth(), (dataPoint1.getValue() + dataPoint2.getValue()))); // Add the combined data to the ArrayList of data.
                     
                 }
                 
@@ -736,13 +736,13 @@ public class Merger extends javax.swing.JFrame {
         // Sort the combined data.
         combinedData.sort((dataPoint1, dataPoint2) -> {
             
-            if (dataPoint1.year() != dataPoint2.year()) {
+            if (dataPoint1.getYear() != dataPoint2.getYear()) {
                 
-               return Integer.compare(dataPoint1.year(), dataPoint2.year());
+               return Integer.compare(dataPoint1.getYear(), dataPoint2.getYear());
                 
             } else {
                 
-                return Integer.compare(dataPoint1.month(), dataPoint2.month());
+                return Integer.compare(dataPoint1.getMonth(), dataPoint2.getMonth());
             
             }
             
@@ -772,17 +772,17 @@ public class Merger extends javax.swing.JFrame {
         int month = 1;
         for (model.Data dataPoint : data) {
             
-            if (lastYear != dataPoint.year()) {
+            if (lastYear != dataPoint.getYear()) {
                 
-                statisticLine1.append(",,").append(dataPoint.year());
+                statisticLine1.append(",,").append(dataPoint.getYear());
                 statisticLine2.append(",,"); // Align values with the year.
-                lastYear = dataPoint.year();
+                lastYear = dataPoint.getYear();
                 month = 1;
                               
             }
          
             statisticLine1.append(",").append(month);
-            statisticLine2.append(",").append(dataPoint.value());
+            statisticLine2.append(",").append(dataPoint.getValue());
             
             month++;
              
