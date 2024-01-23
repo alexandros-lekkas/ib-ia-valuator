@@ -62,13 +62,6 @@ public class Statistic {
     }
 
     /**
-     * Gets the name of the statistic.
-     *
-     * @return The name of the statistic.
-     */
-    public String getName() { return name; }
-
-    /**
      * Reads data from a file and populates the Data list of the Statistic object.
      */
     public void readData() {
@@ -79,98 +72,81 @@ public class Statistic {
 
             FileReader fileReader = new FileReader(this.filePath);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-            // Find where the statistic is in the file.
-            boolean found = false;
-            while (!found) { // Loop through the file and only stop when statistic is found.
-
-                String[] currentLine = bufferedReader.readLine().split(","); // Save current line to an array.
-                logger.info("Current line: " + Arrays.toString(currentLine) + ".");
-
-                try {
-
-                    if (currentLine.length > 1 && currentLine[1].equalsIgnoreCase(name)) {
-
-                        String[] nextLine = bufferedReader.readLine().split(",");
-
-                        int i = 3; // First year should be defined at index position 3.
-                        while (i < currentLine.length && !currentLine[i].isEmpty()) { // Loop through to each year that is part of the statistic.
-
-                            int year = Integer.parseInt(currentLine[i]); // Get the year that belongs to this year of data.
-                            int j = 4; // The next index.
-                            try {
-                                
-                                while (j < currentLine.length && Integer.parseInt(currentLine[j]) <= 12) { // Loop through the years data from months creating data.
-
-                                    int value = (int) Double.parseDouble(nextLine[j]);
-                                    data.add(new Data(year, Integer.parseInt(currentLine[j]), value));
-                                    logger.info(data.toString());
-
-                                    j++;
-
-                                }
-                                
-                            } catch (NumberFormatException numberFormatExceptions) {
-
-                                // Log warning message.
-                                logger.warning(
-
-                                        "Number format issue. Skipping over value.\n"
-                                        + numberFormatExceptions.getMessage()
-
-                                );
-                                
-                            }
-
-                            i = i + 14; // Skip to the next year.
-
-                        }
-
-                        found = true;
-
-                    }
-
-                } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
-
-                    // Log warning message.
-                    logger.warning(
-
-                            "Array index is out of bounds, skipping over.\n" +
-                            arrayIndexOutOfBoundsException.getMessage()
-
-                    );
-
-                }
-
-            }
+            findStatisticInFile(bufferedReader);
 
         } catch (IOException ioException) {
 
             // Output error message.
-            logger.severe(ioException.getMessage());
+            System.out.println(ioException.getMessage());
             JOptionPane.showMessageDialog(
 
                     null,
-                    "Error when trying to register.",
+                    "Error with IO. File potentially not found.",
                     "IO Error",
                     JOptionPane.ERROR_MESSAGE
 
             );
 
-        } catch (NullPointerException nullPointerException) {
-
-            // Log warning message.
-            logger.warning(
-
-                    "Null pointer, does not matter line is probably blank.\n" +
-                    nullPointerException.getMessage()
-
-            );
-
         }
 
-        logger.info(this.data.toString());
+    }
 
+    /**
+     * Finds the statistic in the given file using the provided BufferedReader.
+     *
+     * @param bufferedReader The BufferedReader object to read the file.
+     * @throws IOException If an I/O error occurs.
+     */
+    private void findStatisticInFile(BufferedReader bufferedReader) throws IOException {
+
+        boolean found = false;
+
+        while (!found) {
+
+            String[] currentLine = bufferedReader.readLine().split(",");
+            logger.info("Current line: " + Arrays.toString(currentLine) + ".");
+
+            try {
+
+                if (currentLine.length > 1 && currentLine[1].equalsIgnoreCase(name)) {
+
+                    String[] nextLine = bufferedReader.readLine().split(",");
+                    processDataLines(currentLine, nextLine);
+                    found = true;
+
+                }
+
+            } catch (ArrayIndexOutOfBoundsException exception) {
+
+                logger.warning("Array index is out of bounds, skipping over.\n" + exception.getMessage());
+            }
+
+        }
+    }
+
+    private void processDataLines(String[] currentLine, String[] nextLine) {
+        int i = 3;
+
+        while (i < currentLine.length && !currentLine[i].isEmpty()) {
+            int year = Integer.parseInt(currentLine[i]);
+            int j = 4;
+
+            processYearData(currentLine, nextLine, i, j, year);
+            i += 14;
+        }
+    }
+
+    private void processYearData(String[] currentLine, String[] nextLine, int i, int j, int year) {
+        try {
+            while (j < currentLine.length && Integer.parseInt(currentLine[j]) <= 12) {
+                int value = (int) Double.parseDouble(nextLine[j]);
+                data.add(new Data(year, Integer.parseInt(currentLine[j]), value));
+                logger.info(data.toString());
+                j++;
+            }
+        } catch (NumberFormatException exception) {
+            logger.warning("Number format issue. Skipping over value.\n" + exception.getMessage());
+        }
     }
 
     /**
@@ -280,6 +256,13 @@ public class Statistic {
         return "Name: " + this.name + " - File path: " + this.filePath + " - " + dataString;
 
     }
+
+    /**
+     * Gets the name of the statistic.
+     *
+     * @return The name of the statistic.
+     */
+    public String getName() { return name; }
 
     /**
      * Returns the data as an ArrayList of Data objects.

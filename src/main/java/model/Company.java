@@ -317,11 +317,11 @@ public class Company {
         ArrayList<Data> allCostData = extrapolateAllData(costs, monthsToExtrapolate);
 
         // Find the most recent complete year
-        int mostRecentCompleteYear = findMostRecentCompleteYear(allRevenueData);
+        int mostRecentYear = getAllDataMostRecentYear(allRevenueData, monthsToExtrapolate);
 
         // Calculate the valuation only for the most recent complete year
-        double revenueSum = sumDataForYear(allRevenueData, mostRecentCompleteYear);
-        double costSum = sumDataForYear(allCostData, mostRecentCompleteYear);
+        double revenueSum = sumDataForYear(allRevenueData, mostRecentYear);
+        double costSum = sumDataForYear(allCostData, mostRecentYear);
 
         double netProfit = revenueSum - costSum;
         int profitMultiplier = 5; // Adjust this multiplier as necessary.
@@ -332,43 +332,28 @@ public class Company {
     }
 
     /**
-     * Finds the most recent complete year from the given list of data points.
+     * Calculates the most recent year in the given list of data with optional extrapolation for additional months.
      *
-     * @param data The list of data points.
+     * @param allData The list of Data objects containing the recorded data.
+     * @param monthsToExtrapolate The number of months to extrapolate the data for.
      *
-     * @return The most recent complete year.
+     * @return The most recent year in the list, considering the months to extrapolate.
      */
-    private int findMostRecentCompleteYear(ArrayList<Data> data) {
+    private int getAllDataMostRecentYear(ArrayList<Data> allData, int monthsToExtrapolate) {
 
-        int currentYear = Integer.MIN_VALUE;
-        int[] monthCount = new int[12];
+        Data lastData = allData.get(allData.size() - 1);
 
-        for (Data dataPoint : data) {
+        int mostRecentYear = lastData.year();
 
-            if (dataPoint.year() > currentYear) {
+        mostRecentYear += monthsToExtrapolate / 12;
 
-                // Check if the previous year was complete
-                if (isYearComplete(monthCount)) {
-
-                    return currentYear; // Return the most recent complete year
-
-                }
-
-                // Reset for the new year
-                currentYear = dataPoint.year();
-                monthCount = new int[12];
-
-            }
-            monthCount[dataPoint.month() - 1]++;
-
+        // If extrapolated months exceeds one or more years, account for the remaining months
+        // by increasing the mostRecentYear by 1
+        if (monthsToExtrapolate % 12 > 0) {
+            mostRecentYear++;
         }
 
-        // Check for the last year in the dataset
-        if (isYearComplete(monthCount)) {
-            return currentYear;
-        }
-
-        return currentYear;
+        return mostRecentYear;
 
     }
 
