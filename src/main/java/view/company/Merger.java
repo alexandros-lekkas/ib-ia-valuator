@@ -1,6 +1,8 @@
 package view.company;
 
 import model.Company;
+import model.Data;
+import model.Statistic;
 import view.LoginSignup;
 
 import javax.swing.UnsupportedLookAndFeelException;
@@ -32,7 +34,6 @@ public class Merger extends javax.swing.JFrame {
 
     // First Company object.
     Company company1 = null;
-
 
     // Second Company object.
     Company company2 = null;
@@ -397,9 +398,9 @@ public class Merger extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Second company choosing button is clicked.
-     * 
-     * @param evt The event.
+     * The action performed when the chooseCompany2Button is clicked.
+     *
+     * @param evt The event triggered by the button click.
      */
     private void chooseCompany2ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseCompany2ButtonActionPerformed
         
@@ -415,9 +416,9 @@ public class Merger extends javax.swing.JFrame {
     }//GEN-LAST:event_chooseCompany2ButtonActionPerformed
 
     /**
-     * First company choosing button is clicked.
-     * 
-     * @param evt The event.
+     * Executes the action when the chooseCompany1Button is clicked.
+     *
+     * @param evt The event triggered by the button click.
      */
     private void chooseCompany1ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseCompany1ButtonActionPerformed
        
@@ -434,59 +435,58 @@ public class Merger extends javax.swing.JFrame {
     }//GEN-LAST:event_chooseCompany1ButtonActionPerformed
 
     /**
-     * When the merging cancel is done just close the window.
-     * 
-     * @param evt The event.
+     * Hides the merging dialog when the cancel merge button is clicked.
+     *
+     * @param evt The event triggered by the button click.
      */
     private void cancelMergeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelMergeButtonActionPerformed
         
-        mergingDialog.setVisible(false); // Make the dialog not visisble.
+        mergingDialog.setVisible(false); // Make the dialog not visible.
         
     }//GEN-LAST:event_cancelMergeButtonActionPerformed
 
     /**
-     * When the dialog is opened.
-     * 
-     * @param evt The event.
+     * This method is called when the merging dialog component is shown. It sets the text fields in the dialog with the
+     * appropriate values based on the companies being merged.
+     *
+     * @param evt The component event triggered by the dialog being shown.
      */
     private void mergingDialogComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_mergingDialogComponentShown
         
-        companyNameField.setText(company1.getName() + "-" + company2.getName()); // Create a combination of company names.
+        companyNameField.setText(company1.getName() + "-" + company2.getName());
         companyDescriptionField.setText("The merged company of " + company1.getName() + " and " + company2.getName() + "."); // Create a placeholder description
         companyCountryField.setText(company1.getCountry()); // Take the country of the first company by default.
                 
     }//GEN-LAST:event_mergingDialogComponentShown
 
     /**
-     * Merging button pressed.
-     * 
-     * @param evt The event.
+     * Adjusts the merging dialog to its components, centers it to the main panel, and makes it visible.
+     *
+     * @param evt The event triggered by the button click.
      */
     private void mergeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mergeButtonActionPerformed
         
-        mergingDialog.pack(); // Adjust the dialog to its components.
+        mergingDialog.pack();
         mergingDialog.setLocationRelativeTo(this); // Center the new dialog to the main panel.
         mergingDialog.setVisible(true);
         
     }//GEN-LAST:event_mergeButtonActionPerformed
 
     /**
-     * Back button is pressed closing the current window.
-     * 
-     * @param evt The event.
+     * Closes the current window.
+     *
+     * @param evt The event triggered by the button click.
      */
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         
-        dispose(); // Close the current window.
-        
-        // Note: If this was run individually this will essentially exit the program, but that is okay as in the full functionality this will work.
-        
+        // TODO: Add back functionality.
+
     }//GEN-LAST:event_backButtonActionPerformed
 
     /**
-     * The process when the companies are sent to be merged.
-     * 
-     * @param evt The event.
+     * Performs the action when the submitMergeButton is clicked.
+     *
+     * @param evt The event triggered by the button click.
      */
     private void submitMergeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitMergeButtonActionPerformed
         
@@ -494,30 +494,24 @@ public class Merger extends javax.swing.JFrame {
         
         mergingDialog.setVisible(false); // Close the dialog.
 
-        JOptionPane.showMessageDialog(this, "Companies successfuly merged!");
+        // Output success message.
+        JOptionPane.showMessageDialog(
+
+                this,
+                "Companies successfully merged!",
+                "Company Merge Update",
+                JOptionPane.INFORMATION_MESSAGE
+
+        );
         
     }//GEN-LAST:event_submitMergeButtonActionPerformed
 
     /**
-     * Main function used to test the interface without running the entirety of
-     * the program.
+     * Selects a company by opening a file chooser dialog and returning the selected company.
      *
-     * @param args The command line arguments.
+     * @return The selected company, or null if no company is selected or the selected file is not a CSV file.
      */
-    public static void main(String args[]) {
-        
-        resources.Variables.setDataFolderPath(System.getenv("APPDATA") + "/Valuator"); // Sets the main data folder path. Used for file location.
-
-        new Merger().setVisible(true); // Create a new merging panel.
-
-    }
-    
-    /**
-     * Use the file chooser to get the company.
-     * 
-     * @return The company selected.
-     */
-    public model.Company selectCompany() {
+    public Company selectCompany() {
         
         model.Company company = null; // Create a null company.
         
@@ -534,20 +528,24 @@ public class Merger extends javax.swing.JFrame {
             if (selectedFile.getName().toLowerCase().endsWith(".csv")) {
 
                 // Add to the company.
-                company = new model.Company(selectedFile.getAbsolutePath(), selectedFile.getName());
+                company = new Company(selectedFile.getAbsolutePath(), selectedFile.getName());
 
             } else {
 
-                // The selected file is not a CSV file.
-                JOptionPane.showMessageDialog(this, "Please select a CSV file.", "Invalid File Type", JOptionPane.ERROR_MESSAGE);
+                // Output warning message.
+                JOptionPane.showMessageDialog(
+
+                        this,
+                        "Please select a CSV file.",
+                        "Invalid File Type",
+                        JOptionPane.WARNING_MESSAGE
+
+                );
 
             }
 
-        } else if (result == JFileChooser.CANCEL_OPTION) {
-
-            // The user canceled the operation.
         }
-        
+
         return company;
         
     }
@@ -561,7 +559,7 @@ public class Merger extends javax.swing.JFrame {
      * @param description New company description.
      * @param country New company country.
      */
-    public void mergeCompanies(model.Company company1, model.Company company2, String name, String description, String country) {
+    public void mergeCompanies(Company company1, Company company2, String name, String description, String country) {
 
         String filePath = resources.Variables.dataFolderPath + "/Companies/" + name + ".csv";
 
@@ -569,37 +567,43 @@ public class Merger extends javax.swing.JFrame {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
 
             // Write down the company details to file.
+            logger.info("Writing details to new File.");
             writer.write("DETAILS\n");
             writer.write("Name," + name + "\n");
             writer.write("Description," + description + "\n");
             writer.write("Country," + country + "\n");
-            writer.write("END OF DETAILS\n\n");
+            writer.write("END OF DETAILS\n");
 
             // Get revenues and costs from each of the companies.
-            ArrayList<model.Statistic> revenues1 = company1.getRevenues();
-            ArrayList<model.Statistic> revenues2 = company2.getRevenues();
-            ArrayList<model.Statistic> costs1 = company1.getCosts();
-            ArrayList<model.Statistic> costs2 = company2.getCosts();
-            readData(revenues1);
-            readData(revenues2);
-            readData(costs1);
-            readData(costs2);
-            
+            logger.info("Getting revenues and costs from each company.");
+
+            company1.readStatistics();
+            ArrayList<Statistic> revenues1 = company1.getRevenues(); readData(revenues1);
+            ArrayList<Statistic> costs1 = company1.getCosts(); readData(costs1);
+            logger.info(company1.getName() + " | Revenues: " + revenues1.size() + " | Costs: " + costs1.size());
+
+            company2.readStatistics();
+            ArrayList<Statistic> revenues2 = company2.getRevenues(); readData(revenues2);
+            ArrayList<Statistic> costs2 = company2.getCosts(); readData(costs2);
+            logger.info(company2.getName() + " | Revenues: " + revenues2.size() + " | Costs: " + costs2.size());
+
             // Combine revenues and costs.
-            ArrayList<model.Statistic> combinedRevenues = combineStatistics(revenues1, revenues2);
-            ArrayList<model.Statistic> combinedCosts = combineStatistics(costs1, costs2);
+            ArrayList<Statistic> combinedRevenues = combineStatistics(revenues1, revenues2);
+            logger.info("Combined revenues (total): " + combinedRevenues.size());
+            ArrayList<Statistic> combinedCosts = combineStatistics(costs1, costs2);
+            logger.info("Combined costs (total): " + combinedCosts.size());
             
             // Output the new data for the company.
             System.out.println(name + " | " + description + " | " + country);
-            
-            // Write statistics.
+
+            // Write Statistics to File.
+            logger.info("Writing Statistics to File.");
             writer.write("STATISTICS\n");
             String[] lineArray;
-            for (model.Statistic statistic : combinedRevenues) {
-                
+            for (Statistic statistic : combinedRevenues) {
+
                 lineArray = statisticToLines("Revenue", statistic);
-                
-                System.out.println(Arrays.toString(lineArray));
+                logger.info(Arrays.toString(lineArray));
                 
                 writer.write(lineArray[0]);
                 writer.write(lineArray[1]);
@@ -649,7 +653,7 @@ public class Merger extends javax.swing.JFrame {
      */
     public void readData(ArrayList<model.Statistic> statistics) {
         
-        for (model.Statistic statistic : statistics) {
+        for (Statistic statistic : statistics) {
             
             statistic.readData();
             
@@ -664,22 +668,22 @@ public class Merger extends javax.swing.JFrame {
      * @param statistics2 Second ArrayList.
      * @return The new ArrayList created from combining them.
      */
-    public ArrayList<model.Statistic> combineStatistics(ArrayList<model.Statistic> statistics1, ArrayList<model.Statistic> statistics2) {
+    public ArrayList<Statistic> combineStatistics(ArrayList<model.Statistic> statistics1, ArrayList<model.Statistic> statistics2) {
         
-        ArrayList<model.Statistic> combinedStatistics = new ArrayList<>(); // Create the new ArrayList to save the merged details.
+        ArrayList<Statistic> combinedStatistics = new ArrayList<>(); // Create the new ArrayList to save the merged details.
         
         // Duplicate lists to use for re-adding.
-        ArrayList<model.Statistic> statistics1copy = new ArrayList<>(statistics1);
-        ArrayList<model.Statistic> statistics2copy = new ArrayList<>(statistics2);
+        ArrayList<Statistic> statistics1copy = new ArrayList<>(statistics1);
+        ArrayList<Statistic> statistics2copy = new ArrayList<>(statistics2);
 
-        // Loop through the two statistics finding similar ones and perfomring corresponding logic.
-        for (model.Statistic statistic1 : statistics1) {
+        // Loop through the two statistics finding similar ones and performing corresponding logic.
+        for (Statistic statistic1 : statistics1) {
             
-            // Loop through spessscifically the second one, doesn't matter in which order things are.
-            for (model.Statistic statistic2 : statistics2) {
+            // Loop through specifically the second one, doesn't matter in which order things are.
+            for (Statistic statistic2 : statistics2) {
                     
                 // Check if statistics have the same name, made to uppercase to avoid character issues.
-                if (statistic1.getName().toUpperCase().equals(statistic2.getName().toUpperCase())) {
+                if (statistic1.getName().equalsIgnoreCase(statistic2.getName())) {
                     
                     // Remove statistics from their ArrayLists.
                     statistics1copy.remove(statistic1);
@@ -702,17 +706,16 @@ public class Merger extends javax.swing.JFrame {
         System.out.println(combinedStatistics);
 
         return combinedStatistics; // Return the combined statistics.
-        
-        // Note: We do not need to specify if these are costs or revenues as they are pre-organised into lists.
-        
+
     }
-    
+
     /**
-     * Combine data points.
-     * 
-     * @param data1 The data from the first statistic.
-     * @param data2 The data from the second statistic.
-     * @return 
+     * Combines two ArrayLists of model.Data objects into a single ArrayList.
+     *
+     * @param data1 The first ArrayList of model.Data objects.
+     * @param data2 The second ArrayList of model.Data objects.
+     *
+     * @return A new ArrayList that combines the data from data1 and data2.
      */
     private ArrayList<model.Data> combineData(ArrayList<model.Data> data1, ArrayList<model.Data> data2) {
         
@@ -727,7 +730,7 @@ public class Merger extends javax.swing.JFrame {
             
             System.out.println(dataPoint1.toString());
             
-            // Loop through specifcally second data here, order does not matter.
+            // Loop through specifically second data here, order does not matter.
             for (model.Data dataPoint2 : data2) {
                 
                 System.out.println(dataPoint2.toString());
@@ -771,17 +774,18 @@ public class Merger extends javax.swing.JFrame {
         return combinedData; // Return the data that was combined.
         
     }
-    
-    /**
-     * Writes statistic to file.
-     * 
-     * @param statisticType The type of statistic.
-     * @param statistic Statistic to convert.
-     * @return An array holding each line.
-     */
-    public String[] statisticToLines(String statisticType, model.Statistic statistic) {
 
-        
+    /**
+     * Converts a statistic object into an array of strings representing the statistic data.
+     *
+     * @param statisticType The type of statistic.
+     * @param statistic The statistic object to convert.
+     * @return An array of strings representing the statistic data.
+     */
+    public String[] statisticToLines(String statisticType, Statistic statistic) {
+
+        logger.info("Converting " + statisticType + " statistic " + statistic.getName() + " to line.");
+
         ArrayList<model.Data> data = statistic.getData(); // Get the data for that specific statistic.
         StringBuilder statisticLine1 = new StringBuilder(statisticType + "," + statistic.getName());
         StringBuilder statisticLine2 = new StringBuilder(",");
@@ -789,7 +793,7 @@ public class Merger extends javax.swing.JFrame {
         
         // Loop through data creating the data lines.
         int month = 1;
-        for (model.Data dataPoint : data) {
+        for (Data dataPoint : data) {
             
             if (lastYear != dataPoint.getYear()) {
                 

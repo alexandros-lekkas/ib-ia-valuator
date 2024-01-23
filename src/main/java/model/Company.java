@@ -188,22 +188,40 @@ public class Company {
      */
     private void processStatistics(BufferedReader bufferedReader) {
 
-        boolean found = locateStatistics(bufferedReader);
+        try {
 
-        if (!found) {
+            boolean found = locateStatistics(bufferedReader);
 
-            logger.warning("Null line, might cause issues.");
-            return;
+            if (!found) {
+
+                logger.warning("Null line, might cause issues.");
+                return;
+
+            }
+
+            found = processStatisticLines(bufferedReader);
+
+            if (!found) {
+
+                logger.warning("Could not find end of statistics.");
+
+            }
+
+        } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
+
+            // Output error message.
+            logger.severe(arrayIndexOutOfBoundsException.getMessage());
+            JOptionPane.showMessageDialog(
+
+                    null,
+                    "Issue with file, remove unnecessary spaces..",
+                    "IO Error",
+                    JOptionPane.ERROR_MESSAGE
+
+            );
 
         }
 
-        found = processStatisticLines(bufferedReader);
-
-        if (!found) {
-
-            logger.warning("Could not find end of statistics.");
-
-        }
 
     }
 
@@ -213,7 +231,7 @@ public class Company {
      * @param bufferedReader The BufferedReader used to read the input file.
      * @return true if the statistics line is found, false otherwise.
      */
-    private boolean locateStatistics(BufferedReader bufferedReader) {
+    private boolean locateStatistics(BufferedReader bufferedReader) throws ArrayIndexOutOfBoundsException {
 
         boolean found = false;
         try {
