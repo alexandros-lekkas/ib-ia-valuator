@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -19,6 +20,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.time.Month;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
+import view.LoginSignup;
 
 /**
  * Statistics dashboard to manage all of the statistics that belong to the company.
@@ -26,6 +28,9 @@ import org.jfree.data.time.TimeSeriesCollection;
  * @author ALexandros Lekkas.
  */
 public class Dashboard extends javax.swing.JFrame {
+
+    // Logging.
+    private static final Logger logger = Logger.getLogger(LoginSignup.class.getName());
     
     ArrayList<model.Statistic> revenues; // ArrayList for company revenues.
     ArrayList<model.Statistic> costs; // ArrayList for company costs.
@@ -40,22 +45,31 @@ public class Dashboard extends javax.swing.JFrame {
         company.readStatistics();
         revenues = company.getRevenues();
         costs = company.getCosts();
-        
+
         // Attempt to set the preferred look and feel.
         try {
 
             UIManager.setLookAndFeel(new FlatIntelliJLaf());
 
-        } catch (UnsupportedLookAndFeelException error) { // Catch a look and feel error.
+        } catch (UnsupportedLookAndFeelException unsupportedLookAndFeelException) { // Catch a look and feel error.
 
-            JOptionPane.showMessageDialog(null, "Visual settings not loaded properly!", "Error", JOptionPane.ERROR_MESSAGE);
+            // Output error message.
+            logger.severe(unsupportedLookAndFeelException.getMessage());
+            JOptionPane.showMessageDialog(
+
+                    null,
+                    "Unsupported look and feel.",
+                    "Look & Feel Error",
+                    JOptionPane.ERROR_MESSAGE
+
+            );
 
         }
 
-        java.awt.EventQueue.invokeLater(() -> { initComponents(); }); // Initialise the co on a new thread.
-    
+        java.awt.EventQueue.invokeLater(this::initComponents);
+
     }
-    
+
     /**
      * Add statistics to a scroll pane.
      * 
@@ -90,9 +104,11 @@ public class Dashboard extends javax.swing.JFrame {
                 // Loop through the data of the statistic.
                 ArrayList<model.Data> statisticData = statistic.getData();
                 for(model.Data data : statisticData) {
+
                     Month month = new Month(data.getMonth(), data.getYear());
                     System.out.println(month.toString());
-                    series.add(month, data.getValue());
+                    series.addOrUpdate(month, data.getValue());
+
                 }
 
                 TimeSeriesCollection dataset = new TimeSeriesCollection();

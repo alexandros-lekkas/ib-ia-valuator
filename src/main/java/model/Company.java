@@ -94,6 +94,19 @@ public class Company {
 
             );
 
+        } catch (ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException) {
+
+            // Output warning message.
+            logger.warning(arrayIndexOutOfBoundsException.getMessage());
+            JOptionPane.showMessageDialog(
+
+                    null,
+                    "Please refrain from using blank space between lines of information in Company file.",
+                    "Warning",
+                    JOptionPane.WARNING_MESSAGE
+
+            );
+
         }
 
     }
@@ -103,7 +116,7 @@ public class Company {
      *
      * @param line The line of input to be processed.
      */
-    private void processLine(String line) {
+    private void processLine(String line) throws ArrayIndexOutOfBoundsException {
 
         String[] currentLine = line.split(",");
         logger.info(Arrays.toString(currentLine));
@@ -157,10 +170,12 @@ public class Company {
             // Output error message.
             System.out.println(ioException.getMessage());
             JOptionPane.showMessageDialog(
+
                     null,
                     "Error with IO. File potentially not found.",
                     "IO Error",
                     JOptionPane.ERROR_MESSAGE
+
             );
 
         }

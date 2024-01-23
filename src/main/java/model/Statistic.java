@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Logger;
@@ -188,20 +189,12 @@ public class Statistic {
 
         readData();
 
-        if (getData().isEmpty()) {
-
-            throw new IllegalArgumentException("Data list is empty.");
-
-        }
+        if (getData().isEmpty()) { return null; }
 
         ArrayList<Data> extrapolatedData = new ArrayList<>(data);
 
         // If no extrapolation is needed, return the current data.
-        if (monthsToExtrapolate == 0) {
-
-            return extrapolatedData;
-
-        }
+        if (monthsToExtrapolate == 0) { return extrapolatedData; }
 
         Data lastDataPoint = extrapolatedData.get(extrapolatedData.size() - 1);
         int mostRecentYear = lastDataPoint.getYear();
@@ -273,28 +266,35 @@ public class Statistic {
      */
     public int getLatestCompleteYear() {
 
+        readData();
+
+        logger.info("Getting latest complete year for " + name);
+
         // Check if the ArrayList of Data is long enough for minimum one year.
         if (data.size() >= 12) {
 
-            int latestDataYear = data.get(data.size() - 1).getYear();
+            logger.info("Size of data is over 12.");
 
-            // Check if the previous 11 data points belong to the same year (forming a whole year).
-            for (int i = data.size() - 2; i >= data.size() - 12; i--) {
+            int lastYear = data.get(data.size() - 1).getYear();
 
-                //
-                if (data.get(i).getYear() != latestDataYear) {
+            ArrayList<Data> dataLastYear = new ArrayList<>(data.subList(data.size() - 12, data.size()));
 
+            for (Data dataPoint : dataLastYear) {
+
+                if (dataPoint.getYear() != lastYear) {
+
+                    logger.warning(name + " is not a full year.");
                     return -1;
 
                 }
 
-                return latestDataYear;
-
             }
+
+            return lastYear;
 
         }
 
-        return -1;
+        return -1;  // Return -1 if there are less than 12 datapoints
 
     }
 
