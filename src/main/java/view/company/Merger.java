@@ -666,11 +666,10 @@ public class Merger extends javax.swing.JFrame {
      *
      * @param statistics1 First ArrayList.
      * @param statistics2 Second ArrayList.
+     *
      * @return The new ArrayList created from combining them.
      */
     public ArrayList<Statistic> combineStatistics(ArrayList<Statistic> statistics1, ArrayList<Statistic> statistics2) {
-
-        // TODO: Statistic combination.
 
         logger.info("Combining statistics. | Statistics1 Size: " + statistics1.size() + " – Statistics2 Size: " + statistics1.size());
         
@@ -723,7 +722,7 @@ public class Merger extends javax.swing.JFrame {
      *
      * @return A new ArrayList that combines the data from data1 and data2.
      */
-    private ArrayList<model.Data> combineData(ArrayList<model.Data> data1, ArrayList<model.Data> data2) {
+    private ArrayList<model.Data> combineData(ArrayList<Data> data1, ArrayList<Data> data2) {
         
         ArrayList<model.Data> combinedData = new ArrayList<>(); // Create a new ArrayList to store data.
         
@@ -786,6 +785,7 @@ public class Merger extends javax.swing.JFrame {
      *
      * @param statisticType The type of statistic.
      * @param statistic The statistic object to convert.
+     *
      * @return An array of strings representing the statistic data.
      */
     public String[] statisticToLines(String statisticType, Statistic statistic) {
@@ -819,6 +819,17 @@ public class Merger extends javax.swing.JFrame {
         
         return new String[] { statisticLine1.append("\n").toString(), statisticLine2.append("\n").toString() };
         
+    }
+
+    /**
+     * The main method that starts the application by creating and displaying a Merger object.
+     *
+     * @param args The command line arguments passed to the program.
+     */
+    public static void main(String[] args) {
+
+        new Merger().setVisible(true);
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -9,6 +9,7 @@ package view.company;
 
 import model.Company;
 
+import model.User;
 import view.LoginSignup;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
@@ -27,6 +28,9 @@ public class Dashboard extends javax.swing.JFrame {
     // Logging.
     private static final Logger logger = Logger.getLogger(LoginSignup.class.getName());
 
+    // User of which the Company belongs to.
+    public final User user;
+
     // Company of which the dashboard belongs to.
     private final Company company;
 
@@ -44,8 +48,9 @@ public class Dashboard extends javax.swing.JFrame {
      *
      * @param company The company for which the Dashboard is created.
      */
-    public Dashboard(Company company) {
+    public Dashboard(Company company, User user) {
 
+        this.user = user;
         this.company = company;
         this.name = company.getName();
         this.country = company.getCountry();
@@ -452,7 +457,7 @@ public class Dashboard extends javax.swing.JFrame {
         logger.info("RefreshWindowButton clicked by User.");
 
         setVisible(false);
-        Dashboard refresh = new Dashboard(company); // Creates a new instance of the current Dashboard.
+        Dashboard refresh = new Dashboard(company, user); // Creates a new instance of the current Dashboard.
         refresh.setVisible(true);
         dispose();
 
@@ -503,7 +508,15 @@ public class Dashboard extends javax.swing.JFrame {
      */
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
 
-        // TODO: Add Company deletion.
+        logger.warning("DeleteButton clicked by User.");
+
+        // Remove Company from User's CompanyList.
+        user.getCompanyList().remove(company);
+        user.getCompanyList().save();
+
+        // Close current window and open a new one.
+        dispose();
+        new view.Dashboard(user).setVisible(true);
 
     }//GEN-LAST:event_deleteButtonActionPerformed
 
