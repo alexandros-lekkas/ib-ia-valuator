@@ -1,5 +1,5 @@
-# IB IA Valuator
-💵 A program to calculate company values and simulate mergers, an IB Internal Assessment project
+# IB IA Valuator 💵
+A program to calculate company values and simulate mergers, an IB Internal Assessment project.
 
 ## Description 📕
 
